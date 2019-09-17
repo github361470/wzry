@@ -33,13 +33,13 @@
             </div>
             <div class="hm-bbs-info-in l" style="margin-left:30px;">
                 <div class="t clearfix">
-                    <h2 class="l">求官方出艾琳英雄活动</h2>
+                    <h2 class="l">${article.title}</h2>
                     <div class="hm-detail-fun l">
 					     <span class="icon-like">
-					         <a href="#"><i></i>3</a>
+					         <a href="#"><i></i>${article.upvoteCount}</a>
 					     </span>
                         <span class="icon-talk">
-						     <i></i>10
+						     <i></i>${article.replyCount}
 						</span>
                     </div>
                 </div>
@@ -55,11 +55,11 @@
 
         <!--导航，回首页，帖子标题，排序-->
         <div class="detail-page-box clearfix">
-            <a href="index.do">
+            <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1">
                 <i class="hm-ico-home"></i>首页
             </a>
             <span>></span>
-            <a href="#">求官方出艾琳英雄活动</a>
+            <a href="#">${article.title}</a>
             <a class="new-to-old r" href="" style="font-size:12px;float: right;">
                 <i></i>从新到旧查看
             </a>
@@ -72,20 +72,23 @@
                 <!--原帖楼-->
                 <li class="floor clearfix">
                     <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/></div>
-                        <div class="floorer-name">晨曦初露</div>
+                        <div class="floorer-photo"><img src="${pageContext.request.contextPath}/images/default.png"/></div>
+                        <div class="floorer-name">${article.senderName}</div>
                     </div>
                     <div class="floor-con l">
                         <div class="floor-info clearfix">
-                            <div class="floor-time l">发帖时间：2017-05-24 09:10:00</div>
-                            <div class="r">100次查看</div>
+                            <div class="floor-time l">发帖时间：${article.sendTimeStr}</div>
+                            <div class="r">${article.browseCount}次查看</div>
                         </div>
                         <div class="floor-art-ans">
                             <div class="floor-art">
-                                <p>本人玩得迟，所以看到别人用艾琳的时候，特别羡慕，现贵族6了，很想要一个艾琳，我身边很多朋友也想要，求</p>
+                                <p>${article.content}</p>
                             </div>
                             <div class="floor-ans"></div>
                         </div>
+                        <span class="icon-feedback">
+                                <a href="javascript:;" onclick="showDialog(1)"> <i></i> 回复</a>
+                            </span>
                         <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>
                     </div>
                 </li>

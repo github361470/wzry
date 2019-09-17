@@ -17,7 +17,7 @@ public class VisitNumberController {
     private VisitService visitService;
 
     /**
-     * 查看今天帖子数
+     * 接收前端页面使用ajax发送的请求 查看今天帖子数
      * @return
      */
     @RequestMapping("/todayVisit.do")
@@ -27,7 +27,7 @@ public class VisitNumberController {
     }
 
     /**
-     * 查看总贴
+     * 接收前端页面使用ajax发送的请求查看总贴
      * @return
      */
     @RequestMapping("/totalVisit.do")

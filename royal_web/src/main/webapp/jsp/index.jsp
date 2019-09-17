@@ -41,6 +41,7 @@
             </div>
             <div class="search-box l">
                 <form action="${pageContext.request.contextPath}/search/searchArticle.do" method="post">
+                    <%--返回页面时需要zoneId--%>
                     <input type="hidden" name="zoneId" value="${zoneId}">
                     <input type="text" class="txt l" placeholder="请输入关键字" name="keywords" value="${keywords}">
                     <input type="submit" value="搜索" class="btn l"/>
@@ -95,8 +96,7 @@
             <!-- 左侧列表 -->
             <div class="list-view l">
                 <ul>
-
-
+                    <%--
                     <li class="clearfix ding">
                         <div class="hm-index-title">
                             <i class="set-to-top">顶</i> <a href="getArticle.do">求官方出艾琳英雄活动</a>
@@ -111,8 +111,9 @@
                             <span class="icon-talk"><i></i>0</span>
                         </div>
                     </li>
+                    --%>
 
-
+                    <%--使用c:forEach遍历该区域的所有的article--%>
                     <c:forEach items="${list}" var="article">
                         <c:if test="${article.isTop==0}">
                             <li class="clearfix ">
@@ -121,7 +122,7 @@
                             <li class="clearfix ding ">
                         </c:if>
                         <div class="hm-index-title">
-                            <i class="set-to-top">顶</i> <a href="getArticle.do">${article.title}</a>
+                            <i class="set-to-top">顶</i> <a href="${pageContext.request.contextPath}/getArticle.do">${article.title}</a>
                         </div>
                         <div class="hm-index-con">${article.content}</div>
                         <div class="hm-index-info l">
@@ -146,9 +147,9 @@
             <div class="aside l">
                 <div class="aside-box">
                     <h3 class="t">
-                        <a id="nolineNumbers" href="javascript:;"></a>
+                        <a id="onlineNumbers" href="javascript:;"></a>
                     </h3>
-                    <ul class="b clearfix" id="nolineUser">
+                    <ul class="b clearfix" id="onlineUser">
 
                     </ul>
                 </div>
@@ -166,18 +167,24 @@
 
 <!-- 右边发帖，回顶部 -->
 <div class="fixedBar" id="j_fixedBar">
-    <a id="newTopicBtn" href="javascript:;" class="newTopic"><span></span>发帖</a>
-    <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
+    <a id="newTopicBtn" href="javascript:;"  class="newTopic"><span></span>发帖</a>
+
+    <a href="#" class="goTop"><i> </i><span>返回<br/>顶部</span></a>
 </div>
 
+
 <!-- 发帖弹出框 -->
-<form action="" method="post">
+<form action="${pageContext.request.contextPath}/send/sendArticle.do" method="post">
     <div class="pop-box ft-box">
         <div class="mask"></div>
         <div class="win">
             <div class="win_hd">
                 <h4 class="l">主题帖</h4><span class="close r">&times;</span>
             </div>
+            <%--需要zoneId提交到对应的区域--%>
+            <input type="hidden" name="zoneId" value="${zoneId}">
+            <%--伪代码 需要用户名--%>
+            <input type="hidden" name="username" value="xiaobao">
             <div class="win_bd">
                 <div class="win_bd_t">
                     <input type="text" id="title" name="title" placeholder="帖子标题"/>
@@ -238,16 +245,29 @@
                 dataType: "json",
                 success: function (data) {
                     var onLine = data;
-                    $("#nolineNumbers").html("在线用户" + "(" + onLine.length + ")");
+                    $("#onlineNumbers").html("在线用户" + "(" + onLine.length + ")");
                     var res = "";
                     for (var i = 0; i < onLine.length; i++) {
                         res += "<li>" + "<img" + " " + "src=" + "${pageContext.request.contextPath}/images/" + onLine[i]["picurl"] + " " + "height =" + "55" + "/>" + "<p>" + onLine[i]["userName"] + "</p>" + "</li>";
                     }
-                    $("#nolineUser").append(res);
+                    $("#onlineUser").append(res);
                 }
             });
         })
     });
+
+
+$(".btn").click(function () {
+    
+    if (false){
+        alert("请先登录");
+        location.href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1";
+    }
+})
+
+
+
+
 
 </script>
 

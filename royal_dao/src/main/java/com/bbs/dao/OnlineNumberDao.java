@@ -2,7 +2,6 @@ package com.bbs.dao;
 
 import com.bbs.domain.User;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
