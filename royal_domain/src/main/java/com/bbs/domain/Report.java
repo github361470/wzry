@@ -26,9 +26,10 @@ public class Report implements Serializable {
     private String reportusername;
 
     /**
-     * 处理状态
+     * 处理状态,0屏蔽，1显示
      */
     private Integer reportstatus;
+    private String reportstatusStr;
 
     /**
      * 文章ID
@@ -83,6 +84,19 @@ public class Report implements Serializable {
 
     public void setArticleid(Integer articleid) {
         this.articleid = articleid;
+    }
+
+    public String getReportstatusStr() {
+        if (reportstatus==0){
+            reportstatusStr="";
+        }else {
+            reportstatusStr="";
+        }
+        return reportstatusStr;
+    }
+
+    public void setReportstatusStr(String reportstatusStr) {
+        this.reportstatusStr = reportstatusStr;
     }
 
     @Override

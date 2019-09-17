@@ -10,45 +10,49 @@ public class Zone implements Serializable {
     /**
      * 交流区编号
      */
-    private Integer zoneid;
+    private Integer zoneId;
 
     /**
      * 交流区名字
      */
-    private String zonename;
+    private String zoneName;
 
     /**
      * 是否默认，1代表默认，2代表非默认
      */
-    private Integer isdef;
+    private Integer isDef;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getZoneid() {
-        return zoneid;
+    public Integer getZoneId() {
+        return zoneId;
     }
 
-    public void setZoneid(Integer zoneid) {
-        this.zoneid = zoneid;
+    public void setZoneId(Integer zoneId) {
+        this.zoneId = zoneId;
     }
 
-    public String getZonename() {
-        return zonename;
+    public String getZoneName() {
+        return zoneName;
     }
 
-    public void setZonename(String zonename) {
-        this.zonename = zonename;
+    public void setZoneName(String zoneName) {
+        this.zoneName = zoneName;
     }
 
-    public Integer getIsdef() {
-        return isdef;
+    public Integer getIsDef() {
+        return isDef;
     }
 
-    public void setIsdef(Integer isdef) {
-        this.isdef = isdef;
+    public void setIsDef(Integer isDef) {
+        this.isDef = isDef;
     }
 
-    @Override
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+   /* @Override
     public boolean equals(Object that) {
         if (this == that) {
             return true;
@@ -74,8 +78,8 @@ public class Zone implements Serializable {
         result = prime * result + ((getIsdef() == null) ? 0 : getIsdef().hashCode());
         return result;
     }
-
-    @Override
+*/
+   /* @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
@@ -87,5 +91,5 @@ public class Zone implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
-    }
+    }*/
 }

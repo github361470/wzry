@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>帖信息管理页面</title>
+    <title>敏感词汇管理页面</title>
 
 </head>
 <style type="text/css">
@@ -41,7 +41,7 @@
                 <div >
                     <ol class="breadcrumb">
                         <li><a href="#">用户帖管理</a></li>
-                        <li class="active">帖子信息</li>
+                        <li class="active">敏感词汇管理</li>
                     </ol>
                 </div>
                 <hr>
@@ -51,23 +51,8 @@
                         <form method="get" id="articleSearchForm">
                             <table>
                                 <tr>
-                                    <th>
-                                        <label for="title" class="control-label">标题:</label>
-                                    </th>
-                                    <th>
-                                        <input type="text" id="title" class="form-control"
-                                               name="title" value="">
-                                        <input type="hidden" id="pageNum" name="pn" value="">
-                                    </th>
-                                    <th>
-                                        <label for="article_sendername" class="control-label">创帖人:</label>
-                                    </th>
-                                    <th>
-                                        <input type="text" id="article_sendername" class="form-control"
-                                               name="sendername" value="">
-                                    </th>
                                     <th colspan="2">
-                                        <input type="button" value="查询" class="form-control btn-primary">
+                                        <input type="button" value="新增敏感词" class="form-control btn-primary">
                                     </th>
                                 </tr>
                             </table>
@@ -80,40 +65,25 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th>标题</th>
-                        <th>内容</th>
-                        <th>创帖人</th>
-                        <th>是否置顶</th>
-                        <th>回复数</th>
-                        <th>点赞数</th>
-                        <th>浏览数</th>
-                        <th>所在交流区</th>
+                        <th>序号</th>
+                        <th>敏感词</th>
+                        <th>是否启用</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${articleMsgs.list}" var="article">
-                        
                             <tr>
-                                <td width="15%">${article.title}</td>
-                                <td width="30%" class="line-limit-length">${article.content}</td>
-                                <td width="5%" class="line-limit-length">${article.senderName}</td>
-                                <td width="5%" class="line-limit-length">${article.isTopStr}</td>
-                                <td width="5%">${article.replyCount}</td>
-                                <td width="5%">${article.upvoteCount}</td>
-                                <td width="5%">${article.browseCount}</td>
-                                <td width="15%">${article.zone.zoneName}</td>
+                                <td width="15%">${word.wordId}</td>
+                                <td width="30%" class="line-limit-length">${word.word} </td>
+                                <td width="15%" class="line-limit-length">${word.statusStr}</td>
                                 <td width="15%">
-                                    <a href="/article/deleteArticle.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary">屏蔽</a>
-                                    <c:if test="${article.isTop==0}">
-                                        <a href="/article/changeStatus.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >置顶</a>
-                                    </c:if>
-                                    <c:if test="${article.isTop==1}">
-                                        <a href="/article/changeStatus.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-info" >取消</a>
-                                    </c:if>
+                                    <a href="" role="button" class="btn btn-primary">启用</a>
+
+                                    <a href="" role="button" class="btn btn-danger" >停用</a>
+
                                 </td>
                             </tr>
-                    </c:forEach>
+
                     </tbody>
                 </table>
 
@@ -172,11 +142,6 @@
 </div><!-- /.hrms_dept_container -->
 
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
-<%@ include file="ArticleUpdate.jsp"%>
-<script>
-    function searchArticle(e) {
-        location.href="${pageContext.request.contextPath}/article/findByPage.do?size=5&page="+e;
-    }
-</script>
+<%--<%@ include file="ArticleUpdate.jsp"%>--%>
 </body>
 </html>
