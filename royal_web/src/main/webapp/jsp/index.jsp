@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <meta charset="UTF-8"/>
@@ -11,6 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index-new.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/hm-bbs.js"></script>
+
 </head>
 <body>
 
@@ -25,8 +27,6 @@
         <div class="hm-banner"></div>
 
 
-
-
         <!--头部，帖子统计，搜索-->
         <div class="hm-bbs-info">
             <div class="hm-bbs-icon l" style="width:130px;">
@@ -35,38 +35,59 @@
             <div class="hm-bbs-info-in l" style="margin-left:30px;">
                 <div class="t clearfix"><h2 class="l">王者荣耀</h2></div>
                 <p>
-                    <span>今日帖子<strong>99</strong></span>
-                    <span>全部帖子<strong>250</strong></span>
+                    <span>今日帖子<strong id="visit1"></strong></span>
+                    <span>全部帖子<strong id="visit2"></strong></span>
                 </p>
             </div>
             <div class="search-box l">
-                <form action="javascript:;">
-                    <input type="text" class="txt l" placeholder="请输入关键字">
-                    <input type="button" value="搜索" class="btn l"/>
+                <form action="${pageContext.request.contextPath}/search/searchArticle.do" method="post">
+                    <input type="hidden" name="zoneId" value="${zoneId}">
+                    <input type="text" class="txt l" placeholder="请输入关键字" name="keywords" value="${keywords}">
+                    <input type="submit" value="搜索" class="btn l"/>
                 </form>
             </div>
         </div>
 
 
-
-
         <!-- 导航 -->
         <ul class="hm-bbs-nav border-lrb clearfix">
+            <c:if test="${zoneId==1}">
             <li class="current">
-                <a href="#"><em></em>综合交流区</a>
-            </li>
+                </c:if>
+                <c:if test="${zoneId!=1}">
             <li>
-                <a href="#"><em></em>BUG反馈区</a>
+                </c:if>
+                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1"><em></em>综合交流区</a>
             </li>
-            <li>
-                <a href="#"><em></em>新闻公告区</a>
+
+
+                <c:if test="${zoneId==2}">
+                <li class="current">
+                    </c:if>
+                    <c:if test="${zoneId!=2}">
+                <li>
+                    </c:if>
+                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=2"><em></em>BUG反馈区</a>
             </li>
-            <li>
-                <a href="#"><em></em>活动专区</a>
+
+                <c:if test="${zoneId==3}">
+                <li class="current">
+                    </c:if>
+                    <c:if test="${zoneId!=3}">
+                <li>
+                    </c:if>
+                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=3"><em></em>新闻公告区</a>
+            </li>
+
+                <c:if test="${zoneId==4}">
+                <li class="current">
+                    </c:if>
+                    <c:if test="${zoneId!=4}">
+                <li>
+                    </c:if>
+                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=4"><em></em>活动专区</a>
             </li>
         </ul>
-
-
 
 
         <!-- 主体部分 -->
@@ -92,94 +113,46 @@
                     </li>
 
 
-
-                    <li class="clearfix ding">
+                    <c:forEach items="${list}" var="article">
+                        <c:if test="${article.isTop==0}">
+                            <li class="clearfix ">
+                        </c:if>
+                        <c:if test="${article.isTop==1}">
+                            <li class="clearfix ding ">
+                        </c:if>
                         <div class="hm-index-title">
-                            <i class="set-to-top">顶</i> <a href="getArticle.do">求官方出艾琳英雄活动</a>
+                            <i class="set-to-top">顶</i> <a href="getArticle.do">${article.title}</a>
                         </div>
-                        <div class="hm-index-con">本人玩得迟，所以看到别人用艾琳的时候，特别羡慕，现贵族6了，很想要一个艾琳，我身边很多朋友也想要，求</div>
+                        <div class="hm-index-con">${article.content}</div>
                         <div class="hm-index-info l">
-                            <span class="article-username">晨曦初露</span><span class="post-time">2017-05-24 08:00:05</span>
+                            <span class="article-username">${article.senderName}</span><span
+                                class="post-time">${article.sendTimeStr}</span>
                         </div>
                         <div class="hm-index-fun r">
-                            <span class="icon-like"><i></i>1</span>
-                            <span class="icon-talk"><i></i>0</span>
+                            <span class="icon-like"><i></i>${article.upvoteCount}</span>
+                            <span class="icon-talk"><i></i>${article.replyCount}</span>
                         </div>
-                    </li>
-                    <li class="clearfix ding">
-                        <div class="hm-index-title">
-                            <i class="set-to-top">顶</i> <a href="getArticle.do">求官方出艾琳英雄活动</a>
-                        </div>
-                        <div class="hm-index-con">本人玩得迟，所以看到别人用艾琳的时候，特别羡慕，现贵族6了，很想要一个艾琳，我身边很多朋友也想要，求</div>
-                        <div class="hm-index-info l">
-                            <span class="article-username">晨曦初露</span><span class="post-time">2017-05-24 08:00:05</span>
-                        </div>
-                        <div class="hm-index-fun r">
-                            <span class="icon-like"><i></i>1</span>
-                            <span class="icon-talk"><i></i>0</span>
-                        </div>
-                    </li>
+                        </li>
 
 
-
-
-                    <li class="clearfix">
-                        <div class="hm-index-title">
-                            <i class="set-to-top">顶</i> <a href="getArticle.do">排位赛BUG，排不上！</a>
-                        </div>
-                        <div class="hm-index-con">现在黄金2，无论怎么匹配，都匹配不到？有次匹配了10分钟，这是为什么？</div>
-                        <div class="hm-index-info l">
-                            <span class="article-username">不哭不闹不炫耀</span><span class="post-time">2017-05-24 09:10:00</span>
-                        </div>
-                        <div class="hm-index-fun r">
-                            <span class="icon-like"><i></i>3</span>
-                            <span class="icon-talk"><i></i>10</span>
-                        </div>
-                    </li>
-
-
-
-
-                    <li class="clearfix">
-                        <div class="hm-index-title">
-                            <i class="set-to-top">顶</i> <a href="getArticle.do">排位赛BUG，排不上！</a>
-                        </div>
-                        <div class="hm-index-con">现在黄金2，无论怎么匹配，都匹配不到？有次匹配了10分钟，这是为什么？</div>
-                        <div class="hm-index-info l">
-                            <span class="article-username">不哭不闹不炫耀</span><span class="post-time">2017-05-24 09:10:00</span>
-                        </div>
-                        <div class="hm-index-fun r">
-                            <span class="icon-like"><i></i>3</span>
-                            <span class="icon-talk"><i></i>10</span>
-                        </div>
-                    </li>
+                    </c:forEach>
 
 
                 </ul>
             </div>
 
 
-
-
             <!-- 右侧侧边栏,在线用户 -->
             <div class="aside l">
                 <div class="aside-box">
                     <h3 class="t">
-                        <a href="javascript:;">在线用户(2)</a>
+                        <a id="nolineNumbers" href="javascript:;"></a>
                     </h3>
-                    <ul class="b clearfix">
-                        <li>
-                            <div><img src="images/default.png" height="55"/> </div>
-                            <p>Mr.King</p>
-                        </li>
-                        <li>
-                            <div><img src="images/default.png" height="55"/></div>
-                            <p>疯子</p>
-                        </li>
+                    <ul class="b clearfix" id="nolineUser">
+
                     </ul>
                 </div>
             </div>
-
 
 
         </div>
@@ -189,7 +162,6 @@
 
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
-
 
 
 <!-- 右边发帖，回顶部 -->
@@ -222,6 +194,62 @@
         </div>
     </div>
 </form>
+
+
+<script>
+
+    <%-- 获取今日访问人数--%>
+    $(function () {
+        $(function () {
+            $.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/visit/todayVisit.do",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#visit1").html(data);
+                }
+            });
+        })
+    });
+
+    <%-- 获取总访问人数--%>
+    $(function () {
+        $(function () {
+            $.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/visit/totalVisit.do",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#visit2").html(data);
+                }
+            });
+        })
+    });
+
+    <%--显示在线用户--%>
+    $(function () {
+        $(function () {
+            $.ajax({
+                type: "post",
+                url: "${pageContext.request.contextPath}/online/findOnlineUser.do",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    var onLine = data;
+                    $("#nolineNumbers").html("在线用户" + "(" + onLine.length + ")");
+                    var res = "";
+                    for (var i = 0; i < onLine.length; i++) {
+                        res += "<li>" + "<img" + " " + "src=" + "${pageContext.request.contextPath}/images/" + onLine[i]["picurl"] + " " + "height =" + "55" + "/>" + "<p>" + onLine[i]["userName"] + "</p>" + "</li>";
+                    }
+                    $("#nolineUser").append(res);
+                }
+            });
+        })
+    });
+
+</script>
 
 
 </body>

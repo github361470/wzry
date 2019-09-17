@@ -11,17 +11,17 @@ public class User implements Serializable {
     /**
      * 用户ID
      */
-    private Integer userid;
+    private Integer userId;
 
     /**
      * 用户名
      */
-    private String username;
+    private String userName;
 
     /**
      * 密码
      */
-    private String userpass;
+    private String userPass;
 
     /**
      * 邮箱
@@ -41,17 +41,17 @@ public class User implements Serializable {
     /**
      * 最后登录时间
      */
-    private Date lastlogintime;
+    private Date lastLoginTime;
 
     /**
      * 登录状态，0代表未登录，1代表已登录
      */
-    private Integer loginstatus;
+    private Integer loginsStatus;
 
     /**
      * 发言状态，0代表未屏蔽发言（默认），1代表已屏蔽发言
      */
-    private Integer talkstatus;
+    private Integer talkStatus;
 
     /**
      * 申请升级(0-未申请,1-已申请)
@@ -61,32 +61,32 @@ public class User implements Serializable {
     /**
      * 申请升级审核状态(0-未处理,1-已处理)
      */
-    private Integer updatestatus;
+    private Integer updateStatus;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getUserpass() {
-        return userpass;
+    public String getUserPass() {
+        return userPass;
     }
 
-    public void setUserpass(String userpass) {
-        this.userpass = userpass;
+    public void setUserPass(String userPass) {
+        this.userPass = userPass;
     }
 
     public String getEmail() {
@@ -113,28 +113,28 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public Date getLastlogintime() {
-        return lastlogintime;
+    public Date getLastLoginTime() {
+        return lastLoginTime;
     }
 
-    public void setLastlogintime(Date lastlogintime) {
-        this.lastlogintime = lastlogintime;
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 
-    public Integer getLoginstatus() {
-        return loginstatus;
+    public Integer getLoginsStatus() {
+        return loginsStatus;
     }
 
-    public void setLoginstatus(Integer loginstatus) {
-        this.loginstatus = loginstatus;
+    public void setLoginsStatus(Integer loginsStatus) {
+        this.loginsStatus = loginsStatus;
     }
 
-    public Integer getTalkstatus() {
-        return talkstatus;
+    public Integer getTalkStatus() {
+        return talkStatus;
     }
 
-    public void setTalkstatus(Integer talkstatus) {
-        this.talkstatus = talkstatus;
+    public void setTalkStatus(Integer talkStatus) {
+        this.talkStatus = talkStatus;
     }
 
     public Integer getIsupdating() {
@@ -145,76 +145,32 @@ public class User implements Serializable {
         this.isupdating = isupdating;
     }
 
-    public Integer getUpdatestatus() {
-        return updatestatus;
+    public Integer getUpdateStatus() {
+        return updateStatus;
     }
 
-    public void setUpdatestatus(Integer updatestatus) {
-        this.updatestatus = updatestatus;
+    public void setUpdateStatus(Integer updateStatus) {
+        this.updateStatus = updateStatus;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        User other = (User) that;
-        return (this.getUserid() == null ? other.getUserid() == null : this.getUserid().equals(other.getUserid()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
-            && (this.getUserpass() == null ? other.getUserpass() == null : this.getUserpass().equals(other.getUserpass()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
-            && (this.getPicurl() == null ? other.getPicurl() == null : this.getPicurl().equals(other.getPicurl()))
-            && (this.getRole() == null ? other.getRole() == null : this.getRole().equals(other.getRole()))
-            && (this.getLastlogintime() == null ? other.getLastlogintime() == null : this.getLastlogintime().equals(other.getLastlogintime()))
-            && (this.getLoginstatus() == null ? other.getLoginstatus() == null : this.getLoginstatus().equals(other.getLoginstatus()))
-            && (this.getTalkstatus() == null ? other.getTalkstatus() == null : this.getTalkstatus().equals(other.getTalkstatus()))
-            && (this.getIsupdating() == null ? other.getIsupdating() == null : this.getIsupdating().equals(other.getIsupdating()))
-            && (this.getUpdatestatus() == null ? other.getUpdatestatus() == null : this.getUpdatestatus().equals(other.getUpdatestatus()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getUserid() == null) ? 0 : getUserid().hashCode());
-        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
-        result = prime * result + ((getUserpass() == null) ? 0 : getUserpass().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
-        result = prime * result + ((getPicurl() == null) ? 0 : getPicurl().hashCode());
-        result = prime * result + ((getRole() == null) ? 0 : getRole().hashCode());
-        result = prime * result + ((getLastlogintime() == null) ? 0 : getLastlogintime().hashCode());
-        result = prime * result + ((getLoginstatus() == null) ? 0 : getLoginstatus().hashCode());
-        result = prime * result + ((getTalkstatus() == null) ? 0 : getTalkstatus().hashCode());
-        result = prime * result + ((getIsupdating() == null) ? 0 : getIsupdating().hashCode());
-        result = prime * result + ((getUpdatestatus() == null) ? 0 : getUpdatestatus().hashCode());
-        return result;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", userid=").append(userid);
-        sb.append(", username=").append(username);
-        sb.append(", userpass=").append(userpass);
-        sb.append(", email=").append(email);
-        sb.append(", picurl=").append(picurl);
-        sb.append(", role=").append(role);
-        sb.append(", lastlogintime=").append(lastlogintime);
-        sb.append(", loginstatus=").append(loginstatus);
-        sb.append(", talkstatus=").append(talkstatus);
-        sb.append(", isupdating=").append(isupdating);
-        sb.append(", updatestatus=").append(updatestatus);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", userPass='" + userPass + '\'' +
+                ", email='" + email + '\'' +
+                ", picurl='" + picurl + '\'' +
+                ", role=" + role +
+                ", lastLoginTime=" + lastLoginTime +
+                ", loginsStatus=" + loginsStatus +
+                ", talkStatus=" + talkStatus +
+                ", isupdating=" + isupdating +
+                ", updateStatus=" + updateStatus +
+                '}';
     }
 }
