@@ -48,7 +48,7 @@
                 <!-- Table -->
                 <div>
                     <div style="float: left">
-                        <form method="get" id="articleSearchForm">
+                        <form method="post" id="articleSearchForm" action="${pageContext.request.contextPath}/article_manage/findByCondition.do?size=5&page=1">
                             <table>
                                 <tr>
                                     <th>
@@ -56,18 +56,18 @@
                                     </th>
                                     <th>
                                         <input type="text" id="title" class="form-control"
-                                               name="title" value="">
+                                               name="title" value="${condition.title}">
                                         <input type="hidden" id="pageNum" name="pn" value="">
                                     </th>
                                     <th>
-                                        <label for="article_sendername" class="control-label">创帖人:</label>
+                                        <label for="article_senderName" class="control-label">创帖人:</label>
                                     </th>
                                     <th>
                                         <input type="text" id="article_sendername" class="form-control"
-                                               name="sendername" value="">
+                                               name="senderName" value="${condition.senderName}">
                                     </th>
                                     <th colspan="2">
-                                        <input type="button" value="查询" class="form-control btn-primary">
+                                        <input type="submit" value="查询" class="form-control btn-primary">
                                     </th>
                                 </tr>
                             </table>
@@ -92,32 +92,38 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <c:if test="${articleMsgs.list.size()==0}">
+                        <tr>
+                            <td colspan="6">
+                                <strong style="margin-left: 45%"> 无搜索记录</strong>
+                            </td>
+                        </tr>
+                    </c:if>
                     <c:forEach items="${articleMsgs.list}" var="article">
-                        
                             <tr>
                                 <td width="15%">${article.title}</td>
-                                <td width="30%" class="line-limit-length">${article.content}</td>
-                                <td width="5%" class="line-limit-length">${article.senderName}</td>
-                                <td width="5%" class="line-limit-length">${article.isTopStr}</td>
-                                <td width="5%">${article.replyCount}</td>
-                                <td width="5%">${article.upvoteCount}</td>
-                                <td width="5%">${article.browseCount}</td>
-                                <td width="15%">${article.zone.zoneName}</td>
+                                <td width="25%" class="line-limit-length">${article.content}</td>
+                                <td width="8%" class="line-limit-length">${article.senderName}</td>
+                                <td width="8%" class="line-limit-length">${article.isTopStr}</td>
+                                <td width="6%">${article.replyCount}</td>
+                                <td width="6%">${article.upvoteCount}</td>
+                                <td width="6%">${article.browseCount}</td>
+                                <td width="12%">${article.zone.zoneName}</td>
                                 <td width="15%">
-                                    <a href="/article/deleteArticle.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary">屏蔽</a>
+
+                                    <a href="/article_manage/deleteArticle.do?id=${article.articleId}&page=${articleMsgs.pageNum}" role="button" class="btn btn-primary">屏蔽</a>
+
                                     <c:if test="${article.isTop==0}">
-                                        <a href="/article/changeStatus.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >置顶</a>
+                                        <a href="/article_manage/changeStatus.do?id=${article.articleId}&page=${articleMsgs.pageNum}" role="button" class="btn btn-danger" >置顶</a>
                                     </c:if>
                                     <c:if test="${article.isTop==1}">
-                                        <a href="/article/changeStatus.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-info" >取消</a>
+                                        <a href="/article_manage/changeStatus.do?id=${article.articleId}&page=${articleMsgs.pageNum}" role="button" class="btn btn-info" >取消</a>
                                     </c:if>
                                 </td>
                             </tr>
                     </c:forEach>
                     </tbody>
                 </table>
-
-
             </div><!-- /.panel panel-success -->
             <!--显示分页信息-->
             <div class="row">
@@ -175,7 +181,7 @@
 <%@ include file="ArticleUpdate.jsp"%>
 <script>
     function searchArticle(e) {
-        location.href="${pageContext.request.contextPath}/article/findByPage.do?size=5&page="+e;
+        location.href="${pageContext.request.contextPath}/article_manage/findByPage.do?size=5&page="+e;
     }
 </script>
 </body>

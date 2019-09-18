@@ -46,7 +46,7 @@
                 </div>
                 <hr>
                 <!-- Table -->
-                <div>
+
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
@@ -58,33 +58,38 @@
                     </tr>
                     </thead>
                     <tbody>
-                        
+                        <c:forEach items="${reportMsgs.list}" var="report">
                             <tr>
-                                <td width="5%">${report.articleId}</td>
+                                <td width="5%">${report.article.articleId}</td>
                                 <td width="30%" class="line-limit-length">
                                    ${report.reportContent}
                                 </td>
                                 <td width="10%" class="line-limit-length">${report.reportUserName}</td>
                                 <td width="15%" class="line-limit-length">
-                                   ${report.reportTime}
+                                   ${report.reportTimeStr}
                                 </td>
                                 <td width="15%">
-                                    <a href="" role="button" class="btn btn-primary">相关帖子</a>
-                                    <a href="" role="button" class="btn btn-danger">屏蔽</a>
-                                    <a href="" role="button" class="btn btn-info">驳回</a>
+                                     <!-- 按钮触发模态框 -->
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#article_detail"
+                                            onclick="article_Detail('${report.article.articleId}')">
+                                        相关帖子
+                                    </button>
+
+                                    <a href="${pageContext.request.contextPath}/report_manage/verb.do?reportId=${report.reportId}&articleId=${report.article.articleId}&page=${reportMsgs.pageNum}" role="button" class="btn btn-danger">屏蔽</a>
+
+                                    <a href="${pageContext.request.contextPath}/report_manage/return.do?reportId=${report.reportId}&page=${reportMsgs.pageNum}" role="button" class="btn btn-info">驳回</a>
                                 </td>
                             </tr>
-
+                        </c:forEach>
                     </tbody>
                 </table>
-
 
             </div><!-- /.panel panel-success -->
             <!--显示分页信息-->
             <div class="row">
                 <!--文字信息-->
                 <div class="col-md-6">
-                    当前第 ${articleMsgs.pageNum} 页.总共 ${articleMsgs.pages} 页.一共 ${articleMsgs.total} 条记录
+                    当前第 ${reportMsgs.pageNum} 页.总共 ${reportMsgs.pages} 页.一共 ${reportMsgs.total} 条记录
                 </div>
 
                 <!--点击分页-->
@@ -95,32 +100,32 @@
                             <li><a href="#" onclick="searchArticle(1)">首页</a></li>
                             <!--上一页-->
                             <li>
-                                <c:if test="${articleMsgs.hasPreviousPage}">
-                                        <a href="#" onclick="searchArticle('${articleMsgs.pageNum-1}')" aria-label="Previous">
+                                <c:if test="${reportMsgs.hasPreviousPage}">
+                                        <a href="#" onclick="searchArticle('${reportMsgs.pageNum-1}')" aria-label="Previous">
                                             <span aria-hidden="true">«</span>
                                         </a>
                                 </c:if>
                             </li>
 
-                            <c:forEach items="${articleMsgs.navigatepageNums}" var="page_num">
-                                <c:if test="${page_num == articleMsgs.pageNum}">
+                            <c:forEach items="${reportMsgs.navigatepageNums}" var="page_num">
+                                <c:if test="${page_num == reportMsgs.pageNum}">
                                     <li class="active"><a href="#">${page_num}</a></li>
                                 </c:if>
-                                <c:if test="${page_num != articleMsgs.pageNum}">
+                                <c:if test="${page_num != reportMsgs.pageNum}">
                                     <li><a href="#" onclick="searchArticle('${page_num}')">${page_num}</a></li>
                                 </c:if>
                             </c:forEach>
 
                             <!--下一页-->
                             <li>
-                                <c:if test="${articleMsgs.hasNextPage}">
-                                    <a href="javascript:void(0)" onclick="searchArticle('${articleMsgs.pageNum+1}')"
+                                <c:if test="${reportMsgs.hasNextPage}">
+                                    <a href="javascript:void(0)" onclick="searchArticle('${reportMsgs.pageNum+1}')"
                                        aria-label="Next">
                                         <span aria-hidden="true">»</span>
                                     </a>
                                 </c:if>
                             </li>
-                            <li><a href="javascript:void(0)" onclick="searchArticle('${articleMsgs.pages}')">尾页</a></li>
+                            <li><a href="javascript:void(0)" onclick="searchArticle('${reportMsgs.pages}')">尾页</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -134,5 +139,63 @@
 
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
 <%@ include file="ArticleUpdate.jsp"%>
+    <script>
+     function article_Detail(id) {
+         $.ajax({
+             url:"${pageContext.request.contextPath}/article_manage/findById.do",
+             type:"POST" , //请求方式
+             data:{"articleId":id},
+             success:function (data) {
+                 $("#detail_content").val(data.content);
+                 $("#detail_title").val(data.title);
+             },//响应成功后的回调函数
+             error:function () {
+                 alert("出错啦...")
+             },//表示如果请求响应出现错误，会执行的回调函数
+             dataType:"json",//设置接受到的响应数据的格式
+             traditional: true//传递数组时需要设定的属性
+         })
+     }
+     function searchArticle(e) {
+         location.href="${pageContext.request.contextPath}/report_manage/findByPage.do?size=5&page="+e;
+     }
+
+    </script>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        帖子信息详情
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal article_detail_form">
+                        <div class="form-group">
+                            <label for="detail_title" class="col-sm-2 control-label">标题</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" rows="3" name="title" id="detail_title" disabled></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="detail_content" class="col-sm-2 control-label">内容</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" rows="3" name="content" id="detail_content" disabled></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </body>
 </html>

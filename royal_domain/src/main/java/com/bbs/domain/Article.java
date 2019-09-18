@@ -2,6 +2,8 @@ package com.bbs.domain;
 
 import javafx.scene.text.Text;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
 /**
  * 帖子实体类
  */
-public class Article {
+public class Article implements Serializable {
 
     private Integer articleId;   //帖子id
     private String title;       //标题
@@ -23,16 +25,9 @@ public class Article {
     private Integer upvoteCount;  //点赞数
     private Integer browseCount;  //浏览数
     private Zone zone;      //所在交流区
-    private Integer isReport;    //举报状态
+    private Integer isReport;    //举报状态 0没被举报了 1被举报
 
-    public String getIsTopStr() {
-        if (isTop==0){
-            isTopStr="否";
-        }else if (isTop==1){
-            isTopStr="是";
-        }
-        return isTopStr;
-    }
+
 
     public Integer getArticleId() {
         return articleId;
@@ -128,6 +123,17 @@ public class Article {
         this.content = content;
     }
 
+    public String getIsTopStr() {
+        if (isTop!=null){
+            if (isTop==0){
+                isTopStr="否";
+            }else if (isTop==1){
+                isTopStr="是";
+            }
+        }
+
+        return isTopStr;
+    }
     @Override
     public String toString() {
         return "Article{" +
