@@ -48,8 +48,7 @@
                 <!-- Table -->
                 <div>
                     <div style="float: left">
-                        <form method="post" id="articleSearchForm"
-                              action="${pageContext.request.contextPath}/article/findByCondition.do?size=5&page=1">
+                        <form method="get" id="articleSearchForm">
                             <table>
                                 <tr>
                                     <th>
@@ -57,19 +56,18 @@
                                     </th>
                                     <th>
                                         <input type="text" id="title" class="form-control"
-                                               name="title" value="${condition.title}"/>
-                                        <input type="hidden" id="pageNum" name="pn" value=""/>
+                                               name="title" value="">
+                                        <input type="hidden" id="pageNum" name="pn" value="">
                                     </th>
                                     <th>
-                                        <label for="article_senderName" class="control-label">创帖人:</label>
+                                        <label for="article_sendername" class="control-label">创帖人:</label>
                                     </th>
                                     <th>
-                                        <input type="text" id="article_senderName" class="form-control"
-                                               name="senderName" value="${condition.senderName}"/>
+                                        <input type="text" id="article_sendername" class="form-control"
+                                               name="sendername" value="">
                                     </th>
                                     <th colspan="2">
-                                        <input type="submit" value="查询" class="form-control btn-primary"
-                                               id="findByConditionBtn"/>
+                                        <input type="button" value="查询" class="form-control btn-primary">
                                     </th>
                                 </tr>
                             </table>
@@ -94,6 +92,13 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <c:if test="${articleMsgs.list.size()==0}">
+                        <tr>
+                            <td colspan="6">
+                                <strong style="margin-left: 45%"> 无搜索记录</strong>
+                            </td>
+                        </tr>
+                    </c:if>
                     <c:forEach items="${articleMsgs.list}" var="article">
 
                         <tr>

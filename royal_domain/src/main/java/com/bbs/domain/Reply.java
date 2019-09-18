@@ -1,11 +1,12 @@
 package com.bbs.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 回复实体类
  */
-public class Reply {
+public class Reply implements Serializable {
     private int replyId;//回复编号
     private String replyContent;//回复内容
     private Date replyTime;//
