@@ -86,6 +86,13 @@
                             </div>
                             <div class="floor-ans"></div>
                         </div>
+
+                        <div class="hm-detail-fun l">
+					     <span class="icon-like">
+					         <a href="#"><i></i>点赞</a>
+					     </span>
+
+                        </div>
                         <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>
                     </div>
                 </li>

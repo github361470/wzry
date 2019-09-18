@@ -18,7 +18,6 @@ public class UseController {
     @RequestMapping("/findAll.do")
     public String  findAll(){
       List<User> list =  userService.findAll();
-
         System.out.println(list);
         return "main";
     }

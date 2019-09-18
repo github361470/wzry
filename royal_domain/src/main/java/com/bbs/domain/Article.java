@@ -2,6 +2,8 @@ package com.bbs.domain;
 
 import javafx.scene.text.Text;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.beans.Transient;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +12,6 @@ import java.util.List;
  * 帖子实体类
  */
 public class Article {
-
     private Integer articleId;   //帖子id
     private String title;       //标题
     private String content;    //内容
@@ -25,14 +26,7 @@ public class Article {
     private Zone zone;      //所在交流区
     private Integer isReport;    //举报状态
 
-    public String getIsTopStr() {
-        if (isTop==0){
-            isTopStr="否";
-        }else if (isTop==1){
-            isTopStr="是";
-        }
-        return isTopStr;
-    }
+
 
     public Integer getArticleId() {
         return articleId;
@@ -76,6 +70,16 @@ public class Article {
         this.isTop = isTop;
     }
 
+
+   /*public String getIsTopStr() {
+       if (isTop==0){
+           isTopStr="否";
+       }else if (isTop==1){
+           isTopStr="是";
+       }
+       return isTopStr;
+    }*/
+//    @Transient
     public void setIsTopStr(String isTopStr) {
         this.isTopStr = isTopStr;
     }

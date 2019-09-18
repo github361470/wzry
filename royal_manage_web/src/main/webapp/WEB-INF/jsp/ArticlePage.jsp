@@ -6,9 +6,9 @@
 
 </head>
 <style type="text/css">
-    html,body{
-        overflow:auto;
-        height:100%;
+    html, body {
+        overflow: auto;
+        height: 100%;
     }
 
     .line-limit-length {
@@ -26,19 +26,19 @@
 <body>
 <div class="hrms_dept_container">
     <!-- 导航栏-->
-    <%@ include file="../../jsp/commom/head.jsp"%>
+    <%@ include file="../../jsp/commom/head.jsp" %>
 
 
     <!-- 中间部分（左侧栏+表格内容） -->
     <div class="hrms_dept_body">
         <!-- 左侧栏 -->
-        <%@ include file="../../jsp/commom/leftsidebar.jsp"%>
+        <%@ include file="../../jsp/commom/leftsidebar.jsp" %>
 
         <!-- 表格内容 -->
         <div class="dept_info col-sm-10">
             <div class="panel panel-success">
                 <!-- 路径导航 -->
-                <div >
+                <div>
                     <ol class="breadcrumb">
                         <li><a href="#">用户帖管理</a></li>
                         <li class="active">帖子信息</li>
@@ -48,7 +48,8 @@
                 <!-- Table -->
                 <div>
                     <div style="float: left">
-                        <form method="get" id="articleSearchForm">
+                        <form method="post" id="articleSearchForm"
+                              action="${pageContext.request.contextPath}/article/findByCondition.do?size=5&page=1">
                             <table>
                                 <tr>
                                     <th>
@@ -56,18 +57,19 @@
                                     </th>
                                     <th>
                                         <input type="text" id="title" class="form-control"
-                                               name="title" value="">
-                                        <input type="hidden" id="pageNum" name="pn" value="">
+                                               name="title" value="${condition.title}"/>
+                                        <input type="hidden" id="pageNum" name="pn" value=""/>
                                     </th>
                                     <th>
-                                        <label for="article_sendername" class="control-label">创帖人:</label>
+                                        <label for="article_senderName" class="control-label">创帖人:</label>
                                     </th>
                                     <th>
-                                        <input type="text" id="article_sendername" class="form-control"
-                                               name="sendername" value="">
+                                        <input type="text" id="article_senderName" class="form-control"
+                                               name="senderName" value="${condition.senderName}"/>
                                     </th>
                                     <th colspan="2">
-                                        <input type="button" value="查询" class="form-control btn-primary">
+                                        <input type="submit" value="查询" class="form-control btn-primary"
+                                               id="findByConditionBtn"/>
                                     </th>
                                 </tr>
                             </table>
@@ -93,26 +95,36 @@
                     </thead>
                     <tbody>
                     <c:forEach items="${articleMsgs.list}" var="article">
-                        
-                            <tr>
-                                <td width="15%">${article.title}</td>
-                                <td width="30%" class="line-limit-length">${article.content}</td>
-                                <td width="5%" class="line-limit-length">${article.senderName}</td>
-                                <td width="5%" class="line-limit-length">${article.isTopStr}</td>
-                                <td width="5%">${article.replyCount}</td>
-                                <td width="5%">${article.upvoteCount}</td>
-                                <td width="5%">${article.browseCount}</td>
-                                <td width="15%">${article.zone.zoneName}</td>
-                                <td width="15%">
-                                    <a href="/article/deleteArticle.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-primary">屏蔽</a>
-                                    <c:if test="${article.isTop==0}">
-                                        <a href="/article/changeStatus.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-danger" >置顶</a>
-                                    </c:if>
-                                    <c:if test="${article.isTop==1}">
-                                        <a href="/article/changeStatus.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}" role="button" class="btn btn-info" >取消</a>
-                                    </c:if>
-                                </td>
-                            </tr>
+
+                        <tr>
+                            <td width="15%">${article.title}</td>
+                            <td width="30%" class="line-limit-length">${article.content}</td>
+                            <td width="5%" class="line-limit-length">${article.senderName}</td>
+                            <td width="5%" class="line-limit-length">
+                                <c:if test="${article.isTop==0}">
+                                    是
+                                </c:if>
+                                <c:if test="${article.isTop==1}">
+                                    否
+                                </c:if>
+                            </td>
+                            <td width="5%">${article.replyCount}</td>
+                            <td width="5%">${article.upvoteCount}</td>
+                            <td width="5%">${article.browseCount}</td>
+                            <td width="15%">${article.zone.zoneName}</td>
+                            <td width="15%">
+                                <a href="/article/deleteArticle.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}"
+                                   role="button" class="btn btn-primary">屏蔽</a>
+                                <c:if test="${article.isTop==0}">
+                                    <a href="/article/changeStatus.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}"
+                                       role="button" class="btn btn-danger">置顶</a>
+                                </c:if>
+                                <c:if test="${article.isTop==1}">
+                                    <a href="/article/changeStatus.do?id=${article.articleId}&pn=${articleMsgs.pageNum}&title=${articleSearch.title}&sendername=${articleSearch.sendername}"
+                                       role="button" class="btn btn-info">取消</a>
+                                </c:if>
+                            </td>
+                        </tr>
                     </c:forEach>
                     </tbody>
                 </table>
@@ -134,30 +146,20 @@
                             <li><a href="#" onclick="searchArticle(1)">首页</a></li>
                             <!--上一页-->
                             <li>
-                                <c:if test="${articleMsgs.hasPreviousPage}">
-                                        <a href="#" onclick="searchArticle('${articleMsgs.pageNum-1}')" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
-                                        </a>
-                                </c:if>
+                                <a href="#" onclick="searchArticle('${articleMsgs.pageNum-1}')" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
                             </li>
-
                             <c:forEach items="${articleMsgs.navigatepageNums}" var="page_num">
-                                <c:if test="${page_num == articleMsgs.pageNum}">
-                                    <li class="active"><a href="#">${page_num}</a></li>
-                                </c:if>
-                                <c:if test="${page_num != articleMsgs.pageNum}">
-                                    <li><a href="#" onclick="searchArticle('${page_num}')">${page_num}</a></li>
-                                </c:if>
+                                <li><a href="#" onclick="searchArticle('${page_num}')">${page_num}</a></li>
                             </c:forEach>
 
                             <!--下一页-->
                             <li>
-                                <c:if test="${articleMsgs.hasNextPage}">
-                                    <a href="javascript:void(0)" onclick="searchArticle('${articleMsgs.pageNum+1}')"
-                                       aria-label="Next">
-                                        <span aria-hidden="true">»</span>
-                                    </a>
-                                </c:if>
+                                <a href="javascript:void(0)" onclick="searchArticle('${articleMsgs.pageNum+1}')"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
                             </li>
                             <li><a href="javascript:void(0)" onclick="searchArticle('${articleMsgs.pages}')">尾页</a></li>
                         </ul>
@@ -166,17 +168,19 @@
             </div>
         </div><!-- /.dept_info -->
         <!-- 尾部-->
-        <%@ include file="../../jsp/commom/foot.jsp"%>
+        <%@ include file="../../jsp/commom/foot.jsp" %>
     </div><!-- /.hrms_dept_body -->
 
 </div><!-- /.hrms_dept_container -->
 
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
-<%@ include file="ArticleUpdate.jsp"%>
+<%@ include file="ArticleUpdate.jsp" %>
 <script>
     function searchArticle(e) {
-        location.href="${pageContext.request.contextPath}/article/findByPage.do?size=5&page="+e;
+            location.href = "${pageContext.request.contextPath}/article/findByCondition.do?size=5&page=" + e + "&senderName=${condition.senderName}&title=${condition.title}";
     }
+
+
 </script>
 </body>
 </html>

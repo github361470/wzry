@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author 
  */
 public class Word implements Serializable {
-    private Integer wordid;
+    private Integer wordId;
 
     /**
      * 敏感词
@@ -18,14 +18,30 @@ public class Word implements Serializable {
      */
     private Integer status;
 
-    private static final long serialVersionUID = 1L;
+    private String statusStr;
 
-    public Integer getWordid() {
-        return wordid;
+    public String getStatusStr() {
+        if(status==0){
+            statusStr="启用";
+        }else if (status==1){
+            statusStr="停用";
+        }
+
+        return statusStr;
     }
 
-    public void setWordid(Integer wordid) {
-        this.wordid = wordid;
+    public void setStatusStr(String statusStr) {
+        this.statusStr = statusStr;
+    }
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getWordId() {
+        return wordId;
+    }
+
+    public void setWordId(Integer wordId) {
+        this.wordId = wordId;
     }
 
     public String getWord() {
@@ -56,7 +72,7 @@ public class Word implements Serializable {
             return false;
         }
         Word other = (Word) that;
-        return (this.getWordid() == null ? other.getWordid() == null : this.getWordid().equals(other.getWordid()))
+        return (this.getWordId() == null ? other.getWordId() == null : this.getWordId().equals(other.getWordId()))
             && (this.getWord() == null ? other.getWord() == null : this.getWord().equals(other.getWord()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
     }
@@ -65,7 +81,7 @@ public class Word implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getWordid() == null) ? 0 : getWordid().hashCode());
+        result = prime * result + ((getWordId() == null) ? 0 : getWordId().hashCode());
         result = prime * result + ((getWord() == null) ? 0 : getWord().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         return result;
@@ -77,7 +93,7 @@ public class Word implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", wordid=").append(wordid);
+        sb.append(", wordId=").append(wordId);
         sb.append(", word=").append(word);
         sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
