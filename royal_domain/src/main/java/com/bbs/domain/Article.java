@@ -24,6 +24,7 @@ public class Article implements Serializable {
 
     //帖子关联评论（一个帖子会被多个人评论）
      private  List<Comment> comments;
+     private User user;
 
     public Integer getArticleId() {
         return articleId;
@@ -57,9 +58,12 @@ public class Article implements Serializable {
         this.sendTime = sendTime;
     }
 
+
+
+    //发送时间字符串格式
     public String getSendTimeStr() {
-        if (sendTime != null) {
-            sendTimeStr = DateUtils.date2String(sendTime, "yyyy-MM-dd HH:mm:ss");
+        if (sendTime!=null) {
+            sendTimeStr=DateUtils.date2String(sendTime,"yyyy-MM-dd HH:mm:ss");
         }
         return sendTimeStr;
     }
@@ -124,23 +128,19 @@ public class Article implements Serializable {
         this.isReport = isReport;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "articleId=" + articleId +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", sendTime=" + sendTime +
-                ", sendTimeStr='" + sendTimeStr + '\'' +
-                ", senderName='" + senderName + '\'' +
-                ", isTop=" + isTop +
-                ", replyCount=" + replyCount +
-                ", upvoteCount=" + upvoteCount +
-                ", browseCount=" + browseCount +
-                ", zoneId=" + zoneId +
-                ", isReport=" + isReport +
-                ", comments=" + comments +
-                '}';
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

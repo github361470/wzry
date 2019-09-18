@@ -31,7 +31,7 @@ public class User implements Serializable {
     /**
      * 头像
      */
-    private String picurl;
+    private String picUrl;
 
     /**
      * 1代表普通用户；2代表高级用户，3代表超级管理员
@@ -46,7 +46,7 @@ public class User implements Serializable {
     /**
      * 登录状态，0代表未登录，1代表已登录
      */
-    private Integer loginsStatus;
+    private Integer loginStatus;
 
     /**
      * 发言状态，0代表未屏蔽发言（默认），1代表已屏蔽发言
@@ -97,12 +97,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getPicurl() {
-        return picurl;
+    public String getPicUrl() {
+        return picUrl;
     }
 
-    public void setPicurl(String picurl) {
-        this.picurl = picurl;
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     public Integer getRole() {
@@ -121,12 +121,12 @@ public class User implements Serializable {
         this.lastLoginTime = lastLoginTime;
     }
 
-    public Integer getLoginsStatus() {
-        return loginsStatus;
+    public Integer getLoginStatus() {
+        return loginStatus;
     }
 
-    public void setLoginsStatus(Integer loginsStatus) {
-        this.loginsStatus = loginsStatus;
+    public void setLoginStatus(Integer loginStatus) {
+        this.loginStatus = loginStatus;
     }
 
     public Integer getTalkStatus() {
@@ -164,10 +164,10 @@ public class User implements Serializable {
                 ", userName='" + userName + '\'' +
                 ", userPass='" + userPass + '\'' +
                 ", email='" + email + '\'' +
-                ", picurl='" + picurl + '\'' +
+                ", picUrl='" + picUrl + '\'' +
                 ", role=" + role +
                 ", lastLoginTime=" + lastLoginTime +
-                ", loginsStatus=" + loginsStatus +
+                ", loginStatus=" + loginStatus +
                 ", talkStatus=" + talkStatus +
                 ", isupdating=" + isupdating +
                 ", updateStatus=" + updateStatus +

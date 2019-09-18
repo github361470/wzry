@@ -39,18 +39,6 @@ public class SaveSendArticleServiceImpl implements SaveSendArticleService {
         article.setZoneId(Integer.parseInt(zoneId));
 
         saveSendArticleDao.sendArticle(article);
-
     }
 
-    @Override
-    public Article findDetailArticle(String senderName) {
-        /**
-         * 根据用户名会查出所有帖子，获取最新的帖子，也就是发的帖子,通过最大的索引
-         */
-        List<Article> list = saveSendArticleDao.findDetailArticle(senderName);
-        int size = list.size();
-        Article article = list.get(size-1);
-        System.out.println(article);
-        return article;
-    }
 }

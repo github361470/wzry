@@ -13,7 +13,4 @@ public interface SaveSendArticleDao {
     void sendArticle(Article article);
 
 
-
-    @Select("select * from bbs_article_table where senderName = #{senderName}")
-    List<Article> findDetailArticle(String senderName);
 }

@@ -39,22 +39,8 @@ public class SaveSendArticleController {
         //return "redirect:/zone/findAllById.do?zoneId="+ zoneId;
 
 
-        return "redirect:/send/findDetailArticle.do?senderName=" + senderName;
+        return "redirect:/getArticle/findDetailArticleBySenderName.do?senderName=" + senderName;
     }
 
 
-    /**
-     * 携带article信息跳转到帖子页面
-     *
-     * @param senderName
-     * @return
-     */
-    @RequestMapping("/findDetailArticle.do")
-    public ModelAndView findDetailArticle(String senderName) {
-        ModelAndView mv = new ModelAndView();
-        Article article = sendArticleService.findDetailArticle(senderName);
-        mv.addObject("article", article);
-        mv.setViewName("getArticle");
-        return mv;
-    }
 }

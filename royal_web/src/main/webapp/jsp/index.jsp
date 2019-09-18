@@ -122,7 +122,7 @@
                             <li class="clearfix ding ">
                         </c:if>
                         <div class="hm-index-title">
-                            <i class="set-to-top">顶</i> <a href="${pageContext.request.contextPath}/getArticle.do">${article.title}</a>
+                            <i class="set-to-top">顶</i> <a href="${pageContext.request.contextPath}/getArticle/findDetailArticleById.do?articleId=${article.articleId}">${article.title}</a>
                         </div>
                         <div class="hm-index-con">${article.content}</div>
                         <div class="hm-index-info l">
@@ -248,7 +248,7 @@
                     $("#onlineNumbers").html("在线用户" + "(" + onLine.length + ")");
                     var res = "";
                     for (var i = 0; i < onLine.length; i++) {
-                        res += "<li>" + "<img" + " " + "src=" + "${pageContext.request.contextPath}/images/" + onLine[i]["picurl"] + " " + "height =" + "55" + "/>" + "<p>" + onLine[i]["userName"] + "</p>" + "</li>";
+                        res += "<li>" + "<img" + " " + "src=" + "${pageContext.request.contextPath}" + onLine[i]["picUrl"] + " " + "height =" + "55" + "/>" + "<p>" + onLine[i]["userName"] + "</p>" + "</li>";
                     }
                     $("#onlineUser").append(res);
                 }
@@ -257,6 +257,7 @@
     });
 
 
+    <%--发帖先判断是否有用户--%>
 $(".btn").click(function () {
     
     if (false){

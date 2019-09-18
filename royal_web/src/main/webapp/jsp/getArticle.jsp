@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,13 +13,36 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/getArticle.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/hm-bbs.js"></script>
+
+    <style>
+        .floor-con .icon-report i{
+            background-position: -64px -16px;
+        }
+
+        .floor-con .icon-like0 i{
+            background-position: 0px 0px;
+        }
+
+        .floor-con .icon-feedback1 i{
+            background-position: -112px -32px;
+        }
+
+        .floor-con .icon-comment,.floor-con .icon-feedback ,.floor-con .icon-report ,.floor-con .icon-feedback1{
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
+
+    </style>
+
 </head>
+
+
 <body>
 
 
 <!-- 头部 -->
-<jsp:include page="common/header.jsp" />
-
+<jsp:include page="common/header.jsp"/>
 
 
 <div class="hm-header"></div>
@@ -36,9 +59,9 @@
                     <h2 class="l">${article.title}</h2>
                     <div class="hm-detail-fun l">
 					     <span class="icon-like">
-					         <a href="#"><i></i>${article.upvoteCount}</a>
+					         <a href="javaScript:;" id="getUpvoteCount"><i></i>${article.upvoteCount}</a>
 					     </span>
-                        <span class="icon-talk">
+                        <span class="icon-talk" id="replyCount">
 						     <i></i>${article.replyCount}
 						</span>
                     </div>
@@ -72,8 +95,9 @@
                 <!--原帖楼-->
                 <li class="floor clearfix">
                     <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="${pageContext.request.contextPath}/images/default.png"/></div>
-                        <div class="floorer-name">${article.senderName}</div>
+                        <div class="floorer-photo"><img src="${pageContext.request.contextPath}${article.user.picUrl}"/>
+                        </div>
+                        <div class="floorer-name">楼主:${article.senderName}</div>
                     </div>
                     <div class="floor-con l">
                         <div class="floor-info clearfix">
@@ -86,29 +110,43 @@
                             </div>
                             <div class="floor-ans"></div>
                         </div>
-                        <span class="icon-feedback">
-                                <a href="javascript:;" onclick="showDialog(1)"> <i></i> 回复</a>
+
+                        <%--  style="right: 100px"--%>
+                        <%--<span class="icon-like0" style="right: 100px">
+                                <a href="javaScript:void(0);" id="collect"> <i></i> 点赞</a>
                             </span>
-                        <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>
+                        <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>--%>
+
+                        <span id="myUpVote" class="icon-feedback" style="right: 150px"><a
+                                href="javascript:void(0)" id="collect" > <i></i> 点赞</a></span>
+                        <span class="icon-report"><a href="javascript:inspect(0)"> <i></i> 举报</a></span>
+                        <span class="icon-comment" style="right: 80px"><a
+                                href="javaScript:inspect()"> <i></i> 评论</a></span>
+
                     </div>
                 </li>
 
 
+                <c:forEach items="${article.comments}" var="comment" varStatus="s">
                 <!-- 评论部分,一楼及以后 -->
                 <li class="floor clearfix">
+
                     <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/></div>
-                        <div class="floorer-name">不哭不闹不炫耀</div>
+                        <div class="floorer-photo"><img
+                                src="${pageContext.request.contextPath}${comment.user.picUrl}"/></div>
+                        <div class="floorer-name">${comment.user.userName}</div>
                     </div>
                     <div class="floor-con l">
                         <div class="floor-info clearfix">
-                            <div class="floor-time l">回贴时间：2017-05-24 10:10:00</div>
-                            <div class="r">1楼</div>
+                            <div class="floor-time l">回贴时间：${comment.commentTimeStr}</div>
+                            <div class="r">${s.count}楼</div>
                         </div>
                         <div class="floor-art-ans">
                             <div class="floor-art">
-                                <p>楼主你好，请按以下建议反馈格式回复，我们会有专人进行收集。祝你游戏愉快。</p>
+                                <p>${comment.commentContent}</p>
                             </div>
+
+
                             <div class="floor-ans">
                                 <ul>
 
@@ -124,163 +162,135 @@
 
                                 </ul>
                             </div>
-                            <span class="icon-feedback">
+
+
+                            <span class="icon-comment">
                                 <a href="javascript:;" onclick="showDialog(1)"> <i></i> 回复</a>
                             </span>
                         </div>
                     </div>
                 </li>
+                </c:forEach>
 
-                <!--二楼-->
-                <li class="floor clearfix">
-                    <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/> </div>
-                        <div class="floorer-name">不哭不闹不炫耀</div>
-                    </div>
-                    <div class="floor-con l">
-                        <div class="floor-info clearfix">
-                            <div class="floor-time l">回贴时间：2017-05-24 10:10:00</div>
-                            <div class="r">2楼</div>
-                        </div>
-                        <div class="floor-art-ans">
-                            <div class="floor-art">
-                                <p>楼主你好，请按以下建议反馈格式回复，我们会有专人进行收集。祝你游戏愉快。</p>
+
+                <!--发表评论-->
+                <div class="detail-to-comment">
+                    <div class="tit"><a name="comment">发表评论</a></div>
+                    <!-- 未登录时候显示 <div class="con">您没有登录论坛，请登录后再进行回复</div>-->
+
+                    <!-- 登录后显示评论输入框-->
+                    <form action="#" method="post">
+                        <div class="con con-loged">
+                            <div class="con-t">
+                                <textarea id="content" name="commentContent" placeholder="请在此输入您要回复的信息"></textarea>
                             </div>
-                            <div class="floor-ans">
-                                <ul>
-
-                                    <!-- 回复部分 -->
-                                    <li class="clearfix">
-                                        <div class="floor-ans-pho l"><img src="images/default.png"/></div>
-                                        <div class="floor-ans-con l">
-                                            <span class="name">张无忌</span>：顶顶顶！
-                                            <span class="ans-time">2017-05-24 10:11:00</span>
-                                        </div>
-                                    </li>
-
-                                </ul>
+                            <div class="con-b">
+                                <input type="submit" class="btn"/>
+                                <span class="num">不能超过5000字</span>
                             </div>
-                            <span class="icon-feedback">
-                                <a href="javascript:;" onclick="showDialog(2)"> <i></i> 回复</a>
-                            </span>
                         </div>
-                    </div>
-                </li>
-
-
-                <!--三楼-->
-                <li class="floor clearfix">
-                    <div class="floorer-info l">
-                        <div class="floorer-photo"><img src="images/default.png"/></div>
-                        <div class="floorer-name">不哭不闹不炫耀</div>
-                    </div>
-                    <div class="floor-con l">
-                        <div class="floor-info clearfix">
-                            <div class="floor-time l">回贴时间：2017-05-24 10:10:00</div>
-                            <div class="r">3楼</div>
-                        </div>
-                        <div class="floor-art-ans">
-                            <div class="floor-art">
-                                <p>楼主你好，请按以下建议反馈格式回复，我们会有专人进行收集。祝你游戏愉快。</p>
-                            </div>
-                            <div class="floor-ans">
-                                <ul>
-
-                                    <!-- 回复部分 -->
-                                    <li class="clearfix">
-                                        <div class="floor-ans-pho l"><img src="images/default.png"/></div>
-                                        <div class="floor-ans-con l">
-                                            <span class="name">张无忌</span>：顶顶顶！
-                                            <span class="ans-time">2017-05-24 10:11:00</span>
-                                        </div>
-                                    </li>
-
-                                </ul>
-                            </div>
-                            <span class="icon-feedback">
-                                <a href="javascript:;" onclick="showDialog(3)"> <i></i> 回复</a>
-                            </span>
-                        </div>
-                    </div>
-                </li>
-
-
-            </ul>
-        </div>
-
-        <!--发表评论-->
-        <div class="detail-to-comment">
-            <div class="tit"><a name="comment">发表评论</a></div>
-            <!-- 未登录时候显示 <div class="con">您没有登录论坛，请登录后再进行回复</div>-->
-
-            <!-- 登录后显示评论输入框-->
-            <form action="#" method="post">
-                <div class="con con-loged">
-                    <div class="con-t">
-                        <textarea id="content" name="commentContent" placeholder="请在此输入您要回复的信息"></textarea>
-                    </div>
-                    <div class="con-b">
-                        <input type="submit" class="btn"/>
-                        <span class="num">不能超过5000字</span>
-                    </div>
+                    </form>
                 </div>
-            </form>
         </div>
     </div>
-</div>
 
 
-
-<!-- 底部 -->
-<jsp:include page="common/footer.jsp"/>
-
+    <!-- 底部 -->
+    <jsp:include page="common/footer.jsp"/>
 
 
-<!-- 回复弹出框 -->
-<form action="" method="post">
-    <div class="pop-box ft-box">
-        <div class="mask"></div>
-        <div class="win">
-            <div class="win_hd">
-                <h4 class="l">回复<span id="floorSpan"></span>楼</h4>
-                <span class="close r">&times;</span>
-            </div>
-            <div class="win_bd">
-                <div class="win_bd_b">
-                    <textarea id="replyContent" name="replyContent" placeholder="回复内容限于40字以内"></textarea>
+    <!-- 回复弹出框 -->
+    <form action="" method="post">
+        <div class="pop-box ft-box">
+            <div class="mask"></div>
+            <div class="win">
+                <div class="win_hd">
+                    <h4 class="l">回复<span id="floorSpan"></span>楼</h4>
+                    <span class="close r">&times;</span>
                 </div>
-            </div>
-            <div class="win_ft">
-                <div class="win_ft_in">
-                    <input type="submit" class="btn" value="回复"/>
-					<input type="hidden" id="commentId" name="commentId"/>
+                <div class="win_bd">
+                    <div class="win_bd_b">
+                        <textarea id="replyContent" name="replyContent" placeholder="回复内容限于40字以内"></textarea>
+                    </div>
+                </div>
+                <div class="win_ft">
+                    <div class="win_ft_in">
+                        <input type="submit" class="btn" value="回复"/>
+                        <input type="hidden" id="commentId" name="commentId"/>
+                    </div>
                 </div>
             </div>
         </div>
+    </form>
+
+
+    <div class="fixedBar" id="j_fixedBar">
+        <a href="#comment" class="newTopic"><span></span>回复</a>
+        <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
     </div>
-</form>
-
-
-
-<div class="fixedBar" id="j_fixedBar">
-    <a href="#comment" class="newTopic"><span></span>回复</a>
-    <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
-</div>
 
 
 </body>
 
 <script type="text/javascript">
-//弹出回复框
-function showDialog(num, commentId) {
-	var loginUser = "${loginUser}";
-	if(!loginUser){
-		alert("请登录");
-		return;
-	}
-	$("#commentId").val(commentId);
-    $('.pop-box').css('display', 'block');
-    $("#floorSpan").html(num);
-}
+    //弹出回复框
+    function showDialog(num, commentId) {
+        var loginUser = "${loginUser}";
+        if (!loginUser) {
+            alert("请登录");
+            return;
+        }
+        $("#commentId").val(commentId);
+        $('.pop-box').css('display', 'block');
+        $("#floorSpan").html(num);
+    }
+
+
+    //点击收藏，发送ajax
+
+
+    $("#collect").click(
+        function () {
+            var attr = $("#collect").parent().attr("class");
+
+            if (false) {
+                alert("请先登录");
+            }
+
+
+            //icon-feedback  icon-111
+            else if (attr == 'icon-feedback') {
+                $("#collect").parent().attr("class",'icon-feedback1');
+
+                alert('icon-feedback');
+
+              $.ajax({
+                    type: "post",
+                    url: "${pageContext.request.contextPath}/upvote/saveUpvote.do?articleId=" +${article.articleId} + "&upvoteUserName=xiaobao",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                    }
+                });
+
+            } else if (attr == 'icon-feedback1') {
+                $("#collect").parent().attr("class",'icon-feedback');
+                alert('icon-111');
+
+            $.ajax({
+                    type: "post",
+                    url: "${pageContext.request.contextPath}/upvote/deleteUpvote.do?articleId=" +${article.articleId} + "&upvoteUserName=xiaobao",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                    }
+                });
+
+            }
+
+
+        }
+    )
 </script>
 </html>
