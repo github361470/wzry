@@ -34,8 +34,9 @@ public class SaveSendArticleController {
     public String sendArticle(@RequestParam(name = "title") String title,
                               @RequestParam(name = "content") String content,
                               @RequestParam(name = "zoneId") String zoneId,
-                              @RequestParam(name = "username") String senderName) {
-        sendArticleService.sendArticle(title, content, zoneId, senderName);
+                              @RequestParam(name = "username") String senderName,
+                              @RequestParam(name = "picUrl") String picUrl) {
+        sendArticleService.sendArticle(title, content, zoneId, senderName,picUrl);
         //return "redirect:/zone/findAllById.do?zoneId="+ zoneId;
 
 

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/search.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/hm-bbs.js"></script>
+
     <style type="text/css">
         .hm-header-b { border-bottom: 1px solid #d9d9d9; }
     </style>
@@ -22,27 +23,27 @@
 <jsp:include page="common/header.jsp" />
 
 
-<%--
+
 <!--头部信息-->
 <div class="hm-header">
     <div class="hm-inner clearfix">
         <div class="hm-header-t clearfix">
             <h1 class="logo l">
-                <a href="javascript:;"><img src="images/logo.png" alt=""/></a>
+                <a href="javascript:;"><img src="/images/logo.png" alt=""/></a>
             </h1>
-            <div class="search-box l">
+           <%-- <div class="search-box l">
                 <form action="javascript:;">
                     <input type="text" class="txt l" placeholder="请输入关键字">
                     <input type="button" value="搜索" class="btn l"/>
                 </form>
-            </div>
+            </div>--%>
         </div>
         <div class="hm-header-b">
             <i class="hm-ico-home"></i>
-            <a href="index.do">首页</a><span>></span>修改密码
+            <a href="/index.jsp">首页</a><span>></span>修改密码
         </div>
     </div>
-</div>--%>
+</div>
 
 
 <!--修改密码-->
@@ -74,16 +75,15 @@
                 <ul class="clearfix hd">
                     <li ><a href="${pageContext.request.contextPath}/user/userInfo.do">个人信息</a></li>
                     <li class="cur"><a href="${pageContext.request.contextPath}/user/userPwd.do">修改密码</a></li>
-                    <li>
-                        <c:choose>
-                            <c:when test="${user.role eq 1}">
-                                <a href="${pageContext.request.contextPath}/user/accessControl.do">申请高级用户</a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="${pageContext.request.contextPath}/user/userPwd.do"> 开辟新版块</a>
-                            </c:otherwise>
-                        </c:choose>
-                    </li>
+                    <c:choose>
+                        <c:when test="${user.role eq 1}">
+                            <li ><a href="${pageContext.request.contextPath}/user/accessControl.do">申请高级用户</a> </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li > <a href="${pageContext.request.contextPath}/user/newSection.do"> 开辟新版块</a> </li>
+                            <li > <a href="${pageContext.request.contextPath}/user/applyInfo.do"> 版块申请信息</a> </li>
+                        </c:otherwise>
+                    </c:choose>
                 </ul>
                 <form action="${pageContext.request.contextPath}/user/updatePassword.do" method="post">
                   <ul class="bd">

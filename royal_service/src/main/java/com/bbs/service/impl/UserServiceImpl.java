@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        System.out.println(user);
         userDao.update(user);
     }
 }

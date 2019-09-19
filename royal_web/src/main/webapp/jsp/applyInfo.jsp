@@ -81,53 +81,40 @@
                     <li><a href="${pageContext.request.contextPath}/user/userInfo.do">个人信息</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/userPwd.do">修改密码</a></li>
 
-                    <c:choose>
-                        <c:when test="${user.role eq 1}">
-                            <li class="cur"><a href="${pageContext.request.contextPath}/user/accessControl.do">申请高级用户</a></li>
-                        </c:when>
-                        <c:otherwise>
-                            <li ><a href="${pageContext.request.contextPath}/user/newSection.do"> 开辟新版块</a></li>
-                            <li><a href="${pageContext.request.contextPath}/user/applyInfo.do"> 版块申请信息</a></li>
-                        </c:otherwise>
-                    </c:choose>
-
+                        <c:choose>
+                            <c:when test="${user.role eq 1}">
+                                <li class="cur"><a href="${pageContext.request.contextPath}/user/accessControl.do">申请高级用户</a> </li>
+                            </c:when>
+                            <c:otherwise>
+                                 <li > <a href="${pageContext.request.contextPath}/user/newSection.do"> 开辟新版块</a> </li>
+                                <li class="cur"> <a href="${pageContext.request.contextPath}/user/applyInfo.do"> 版块申请信息</a> </li>
+                            </c:otherwise>
+                        </c:choose>
 
                 </ul>
-                <!-- 判断是否已经做了升级申请 ，且为未审核状态-->
-                <c:if test="${user.updateStatus eq 0 and user.isupdating eq 0}">
-                    <form id="form" method="post">
-                        <ul class="bd">
-                            <li class="clearfix">
-                                <div class="info-l red" style="">高级特权</div>
-                                <div class="info-l " style="text-align: center">开辟新版块</div>
-                            </li>
-                            <li class="clearfix">
-                                <div class="info-l red">申请条件</div>
-                                <div class="info-l" style="text-align: center">发帖数&gt;5</div>
-                            </li>
-                            <li class="clearfix">
-                                <div class="info-l red">当前发帖数</div>
-                                <div class="info-l" style="text-align: center">${commentCount}</div>
-                            </li>
 
-                            <li class="clearfix">
-                                <div class="info-l red"></div>
-                                <div class="info-r">
-                                    <input type="button" class="btn" value="申请" onclick="sub();"/>
-                                    <span id="msg" style="color:green;display: none">申请成功等待管理员响应</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </form>
-                </c:if>
-                <c:if test="${user.updateStatus eq 0 and user.isupdating eq 1}">
-                    <ul class="bd">
-                        <li class="clearfix">
-                            <div class="info-l red" style="">审核结果：</div>
-                            <div class="info-l " style="text-align: center">等待管理员审核</div>
-                        </li>
-                    </ul>
-                </c:if>
+
+
+               <table class="table ">
+                   <tr >
+                       <th>版块名字</th>
+                       <th>申请结果</th>
+                   </tr>
+                   <c:forEach items="${zoneapplys}" var="zoneapply">
+                       <tr>
+                           <td>${zoneapply.zoneName}</td>
+                           <td>
+                               <c:if test="${zoneapply.status eq 0}">
+                                   管理员尚未处理，请等待
+                               </c:if>
+                               <c:if test="${zoneapply.status eq 1}">
+                                   管理员已处理
+                               </c:if>
+                           </td>
+                       </tr>
+
+                   </c:forEach>
+               </table>
 
 
             </div>
@@ -142,26 +129,6 @@
 <jsp:include page="common/footer.jsp"/>
 <script type="text/javascript">
 
-    function sub() {
-        $("#form").click(function () {
-            if (${commentCount <= 5}) {
-                alert("用户权限不足")
-                return;
-            }
-            var form = $("#form");
-            form.attr("action", "/user/requestControl.do")
-            form.submit();
-        })
-    }
-
-    $(function () {
-        if (${result.success}) {
-            $("#msg").show();
-            setTimeout(function () {
-                $("#msg").hide();
-            }, 3000)
-        }
-    })
 
 
 </script>

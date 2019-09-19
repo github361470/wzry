@@ -51,43 +51,58 @@
 
 
         <!-- 导航 -->
+        <%--<ul class="hm-bbs-nav border-lrb clearfix">--%>
+            <%--<c:if test="${zoneId==1}">--%>
+            <%--<li class="current">--%>
+                <%--</c:if>--%>
+                <%--<c:if test="${zoneId!=1}">--%>
+            <%--<li>--%>
+                <%--</c:if>--%>
+                <%--<a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1"><em></em>综合交流区</a>--%>
+            <%--</li>--%>
+
+
+            <%--<c:if test="${zoneId==2}">--%>
+            <%--<li class="current">--%>
+                <%--</c:if>--%>
+                <%--<c:if test="${zoneId!=2}">--%>
+            <%--<li>--%>
+                <%--</c:if>--%>
+                <%--<a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=2"><em></em>BUG反馈区</a>--%>
+            <%--</li>--%>
+
+            <%--<c:if test="${zoneId==3}">--%>
+            <%--<li class="current">--%>
+                <%--</c:if>--%>
+                <%--<c:if test="${zoneId!=3}">--%>
+            <%--<li>--%>
+                <%--</c:if>--%>
+                <%--<a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=3"><em></em>新闻公告区</a>--%>
+            <%--</li>--%>
+
+            <%--<c:if test="${zoneId==4}">--%>
+            <%--<li class="current">--%>
+                <%--</c:if>--%>
+                <%--<c:if test="${zoneId!=4}">--%>
+            <%--<li>--%>
+                <%--</c:if>--%>
+                <%--<a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=4"><em></em>活动专区</a>--%>
+            <%--</li>--%>
+        <%--</ul>--%>
+
+
+
         <ul class="hm-bbs-nav border-lrb clearfix">
-            <c:if test="${zoneId==1}">
-            <li class="current">
+            <c:forEach var="zone" items="${zones}">
+                <c:if test="${zoneId==zone.zoneid}">
+                    <li class="current">
                 </c:if>
-                <c:if test="${zoneId!=1}">
-            <li>
+                <c:if test="${zoneId!=zone.zoneid}">
+                    <li>
                 </c:if>
-                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1"><em></em>综合交流区</a>
-            </li>
-
-
-            <c:if test="${zoneId==2}">
-            <li class="current">
-                </c:if>
-                <c:if test="${zoneId!=2}">
-            <li>
-                </c:if>
-                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=2"><em></em>BUG反馈区</a>
-            </li>
-
-            <c:if test="${zoneId==3}">
-            <li class="current">
-                </c:if>
-                <c:if test="${zoneId!=3}">
-            <li>
-                </c:if>
-                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=3"><em></em>新闻公告区</a>
-            </li>
-
-            <c:if test="${zoneId==4}">
-            <li class="current">
-                </c:if>
-                <c:if test="${zoneId!=4}">
-            <li>
-                </c:if>
-                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=4"><em></em>活动专区</a>
-            </li>
+                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=${zone.zoneid}"><em></em>${zone.zonename}</a>
+                </li>
+            </c:forEach>
         </ul>
 
 
@@ -190,6 +205,7 @@
                 <input type="hidden" name="zoneId" value="${zoneId}">
                 <%--伪代码 需要用户名--%>
                 <input type="hidden" name="username" value="${user.userName}">
+                <input type="hidden" name="picUrl" value="${user.picUrl}">
                 <div class="win_bd">
                     <div class="win_bd_t">
                         <input type="text" id="title" name="title" placeholder="帖子标题"/>

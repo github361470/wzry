@@ -10,42 +10,42 @@ public class Zone implements Serializable {
     /**
      * 交流区编号
      */
-    private Integer zoneid;
+    private Integer zoneId;
 
     /**
      * 交流区名字
      */
-    private String zonename;
+    private String zoneName;
 
     /**
      * 是否默认，1代表默认，2代表非默认
      */
-    private Integer isdef;
+    private Integer isDef;
 
     private static final long serialVersionUID = 1L;
 
     public Integer getZoneid() {
-        return zoneid;
+        return zoneId;
     }
 
     public void setZoneid(Integer zoneid) {
-        this.zoneid = zoneid;
+        this.zoneId = zoneid;
     }
 
     public String getZonename() {
-        return zonename;
+        return zoneName;
     }
 
     public void setZonename(String zonename) {
-        this.zonename = zonename;
+        this.zoneName = zonename;
     }
 
     public Integer getIsdef() {
-        return isdef;
+        return isDef;
     }
 
     public void setIsdef(Integer isdef) {
-        this.isdef = isdef;
+        this.isDef = isdef;
     }
 
     @Override
@@ -81,9 +81,9 @@ public class Zone implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", zoneid=").append(zoneid);
-        sb.append(", zonename=").append(zonename);
-        sb.append(", isdef=").append(isdef);
+        sb.append(", zoneId=").append(zoneId);
+        sb.append(", zoneName=").append(zoneName);
+        sb.append(", isDef=").append(isDef);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

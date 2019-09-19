@@ -18,7 +18,7 @@ public class SaveSendArticleServiceImpl implements SaveSendArticleService {
 
 
     @Override
-    public void sendArticle(String title, String content, String zoneId, String senderName) {
+    public void sendArticle(String title, String content, String zoneId, String senderName,String picUrl) {
         /*private Integer articleId;//帖子编号
         private String title;
         private String content;//内容

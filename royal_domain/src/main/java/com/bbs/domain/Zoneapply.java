@@ -7,17 +7,17 @@ import java.io.Serializable;
  * @author 
  */
 public class Zoneapply implements Serializable {
-    private Integer applyzoneid;
+    private Integer applyZoneId;
 
     /**
      * 新增板块名字
      */
-    private String zonename;
+    private String zoneName;
 
     /**
      * 用户名
      */
-    private String username;
+    private String userName;
 
     /**
      * 申请原因
@@ -32,27 +32,27 @@ public class Zoneapply implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public Integer getApplyzoneid() {
-        return applyzoneid;
+        return applyZoneId;
     }
 
     public void setApplyzoneid(Integer applyzoneid) {
-        this.applyzoneid = applyzoneid;
+        this.applyZoneId = applyzoneid;
     }
 
-    public String getZonename() {
-        return zonename;
+    public String getZoneName() {
+        return zoneName;
     }
 
-    public void setZonename(String zonename) {
-        this.zonename = zonename;
+    public void setZoneName(String zoneName) {
+        this.zoneName = zoneName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getReason() {
@@ -84,8 +84,8 @@ public class Zoneapply implements Serializable {
         }
         Zoneapply other = (Zoneapply) that;
         return (this.getApplyzoneid() == null ? other.getApplyzoneid() == null : this.getApplyzoneid().equals(other.getApplyzoneid()))
-            && (this.getZonename() == null ? other.getZonename() == null : this.getZonename().equals(other.getZonename()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
+            && (this.getZoneName() == null ? other.getZoneName() == null : this.getZoneName().equals(other.getZoneName()))
+            && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
             && (this.getReason() == null ? other.getReason() == null : this.getReason().equals(other.getReason()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
     }
@@ -95,8 +95,8 @@ public class Zoneapply implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getApplyzoneid() == null) ? 0 : getApplyzoneid().hashCode());
-        result = prime * result + ((getZonename() == null) ? 0 : getZonename().hashCode());
-        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
+        result = prime * result + ((getZoneName() == null) ? 0 : getZoneName().hashCode());
+        result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
         result = prime * result + ((getReason() == null) ? 0 : getReason().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         return result;
@@ -108,9 +108,9 @@ public class Zoneapply implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", applyzoneid=").append(applyzoneid);
-        sb.append(", zonename=").append(zonename);
-        sb.append(", username=").append(username);
+        sb.append(", applyzoneid=").append(applyZoneId);
+        sb.append(", zoneName=").append(zoneName);
+        sb.append(", userName=").append(userName);
         sb.append(", reason=").append(reason);
         sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);

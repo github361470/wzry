@@ -35,7 +35,7 @@
         </div>
         <div class="hm-header-b">
             <i class="hm-ico-home"></i>
-            <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1">首页</a><span>></span>注册页面
+            <a href="/index.jsp">首页</a><span>></span>注册页面
         </div>
     </div>
 </div>
@@ -75,7 +75,7 @@
                         <li>
                             <div class="reg-l"></div>
                             <div class="reg-c">
-                                <input type="submit" class="submit-btn" value="注册"/><br/>
+                                 <input type="submit" class="submit-btn" value="注册"/><br/>
                             </div>
                         </li>
                     </ul>
@@ -131,6 +131,14 @@
 
 
    })
+
+  if(${not empty result}){
+       if(${!result.success}){
+           alert("格式错误,请重新输入")
+       }
+   }
+
+
 </script>
 
 </body>

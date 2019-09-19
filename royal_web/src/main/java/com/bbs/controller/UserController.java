@@ -2,9 +2,14 @@ package com.bbs.controller;
 
 import com.bbs.common.CommonCode;
 import com.bbs.common.ResponseResult;
-import com.bbs.common.ResultCode;
+
 import com.bbs.domain.User;
+import com.bbs.domain.Zone;
+import com.bbs.domain.Zoneapply;
+import com.bbs.service.CommentService;
 import com.bbs.service.UserService;
+import com.bbs.service.ZoneApplyService;
+import com.bbs.service.ZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import sun.plugin2.main.client.MozillaServiceDelegate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -26,36 +33,99 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private ZoneApplyService zoneApplyService;
+
+    @Autowired
+    private ZoneService zoneService;
 
 
-    //进入用户权限申请quanxian
-    @RequestMapping("/accessControl")
-    public String accessControl(Model model){
+    //进入板块申请信息页面
+    @RequestMapping("/applyInfo")
+    public String applyInfo(HttpServletRequest res,Model model){
+        User user = (User)res.getSession().getAttribute("user");
+        List<Zoneapply> zoneapplys = zoneApplyService.findAllZoneapplyByUserName(user.getUserName());
+        model.addAttribute("zoneapplys",zoneapplys);
+        return "applyInfo";
+    }
+    //进入开辟新板块页面
+    @RequestMapping("/newSection")
+    public String newSection(Model model){
+        Zoneapply zoneapply = new Zoneapply();
+        zoneapply.setStatus(-1);
+        model.addAttribute("zoneapply",zoneapply);
+        return "newSection";
+    }
+    //发送开辟新板块的请求
+    @RequestMapping("/requestNewSection")
+    public String requestNewSection(Zoneapply zoneapply,Model model){
+        ResponseResult responseResult=zoneApplyService.requestNewSection(zoneapply);
+        model.addAttribute("result",responseResult);
+         /*  zoneapply.setStatus(0);
+        model.addAttribute("zoneapply",zoneapply);
+        System.out.println(zoneapply);*/
+        return "newSection";
+    }
+
+
+
+    //进入用户权限申请页面
+    @RequestMapping("/accessControl.do")
+    public String accessControl(HttpServletRequest request,Model model){
+        User user = (User)request.getSession().getAttribute("user");
+        Integer count=commentService.queryCommentCountByUserName(user.getUserName());
+        request.getSession().setAttribute("commentCount",count);
+        model.addAttribute("result" ,new ResponseResult(CommonCode.FAIL));
+        return "accessControl";
+    }
+    //进行用户的权限申请
+    @RequestMapping("/requestControl.do")
+    public String requestControl(HttpServletRequest request,Model model){
+        User user = (User)request.getSession().getAttribute("user");
+        user.setIsupdating(1);
+        userService.update(user);
+        model.addAttribute("result" ,new ResponseResult(CommonCode.SUCCESS));
         return "accessControl";
     }
 
     //进入用户注册页面
     @RequestMapping("/register.do")
     public String register(){
+//       model.addAttribute("result" ,new ResponseResult(CommonCode.FAIL));
         return "register";
     }
     //进行用户注册
     @RequestMapping("/registerValidate1.do")
-    public String registerValidate1(User user, HttpServletRequest res){
+    public String registerValidate1(User user, HttpServletRequest res,Model model){
+        System.out.println("用户名"+user.getUserName().matches("^\\w+$"));
+        System.out.println("密码"+ user.getUserPass().matches("^\\w{6,10}$"));
+        if (!user.getUserName().matches("^\\w+$")||
+            !user.getUserPass().matches("^\\w{6,10}$")||
+            !user.getEmail().matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$")
+        ){
+            System.out.println("错误");
+            model.addAttribute("result",new ResponseResult(CommonCode.FAIL));
+            return "register";
+        }
+
+
         User _user=userService.findByUserName(user.getUserName());
         if(_user!=null){
             return "register";
         }else {
-            user.setRole(1);
             user.setLoginStatus(1);
             user.setPicUrl("\\images\\default.png");
+            user.setRole(1);
             ResponseResult result=userService.userRegister(user);
             if (result.isSuccess()){
                 res.getSession().setAttribute("user",user);
                 return "success";
             }else{
-                //若注册失败则
-                return "fail";
+            //若注册失败则
+            return "fail";
             }
         }
     }
@@ -77,7 +147,8 @@ public class UserController {
     }
     //进入用户修改密码页面
     @RequestMapping("userPwd.do")
-    public String userPwd(){
+    public String userPwd(Model model){
+         //model.addAttribute("result" ,new ResponseResult(CommonCode.FAIL));
         return "userPwd";
     }
 
@@ -91,7 +162,7 @@ public class UserController {
         if (_user != null) {
             //修改用户为登录状态1
             _user.setLoginStatus(1);
-
+            System.out.println("用户角色为："+_user.getRole());
             userService.update(_user);
             res.getSession().setAttribute("user", _user);
             return new ResponseResult(CommonCode.SUCCESS);
@@ -111,7 +182,6 @@ public class UserController {
         System.out.println(user);
         user.setLoginStatus(0);
         user.setLastLoginTime(new Date(System.currentTimeMillis()));
-        System.out.println(111111);
         userService.update(user);
         return "redirect:/zone/findAllById.do?zoneId=1";
     }

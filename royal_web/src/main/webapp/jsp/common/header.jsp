@@ -26,8 +26,10 @@
                         <ul class="editInfos">
                             <li>用户名：<input type="text" id="userName" name="userName" class="ipt"/></li>
                             <li>密&nbsp;&nbsp;&nbsp;码：<input type="password" id="userPass" name="userPass" class="ipt"/></li>
-                            <span id="msg" STYLE="color:red;"></span>
-                            <li><input type="button" value="登录" class="submitBtn"/></li>
+                            <li>
+                               <input type="button"  value="登录" class="submitBtn"/>
+                            </li>
+
                         </ul>
                     </form>
                 </div>
@@ -69,10 +71,11 @@
               $("#j_fixedBar").show();
           });
       });
-     
+
   });
   //进行用户登录的验证
   $(".submitBtn").click(function () {
+
       var formObject = {}
       var data = $("#loginform").serializeArray()
       $.each(data,function(i,item){
@@ -91,14 +94,17 @@
                   if (data.success) {
                       location.href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1";
                   }else{
-                      $("#msg").html(data.message);
+
+                    alert("密码错误请重新输入")
                   }
               }
           } )
       }
   })
 
-      
+
+
+
 </script>
 </html>
 
