@@ -63,7 +63,7 @@
                                     </th>
                                     <th>
 
-                                        <select class="form-control" id="role" name="role">
+                                        <select class="form-control" id="role" name="role" id="select">
                                             <option value="0"></option>
                                             <option value="1">普通用户</option>
                                             <option value="2">高级用户</option>
@@ -203,12 +203,12 @@
 <script>
 
     $(function () {
-        if ($.isEmptyObject(${searchUser.role}) != true) {
-           $('#role').append('<option value="${searchUser.role}" selected="selected">${searchUser.roleStr}</option>');
-        }
+        if ($.isEmptyObject(${searchUser.role})) {
+            $("select option[value='${searchUser.role}']").attr("selected","selected");
+          }
     })
     function searchuser(e) {
-        location.href="${pageContext.request.contextPath}/user_manage/findByPage.do?&userName=&role=0&size=5&page="+e;
+        location.href="${pageContext.request.contextPath}/user_manage/findByPage.do?&userName=${searchUser.userName}&role=${searchUser.role}&size=5&page="+e;
     }
 
     function changeStatus(articleId,page,id) {

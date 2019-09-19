@@ -48,7 +48,7 @@
                 <!-- Table -->
                 <div>
                     <div style="float: left">
-                        <form method="post" id="articleSearchForm" action="${pageContext.request.contextPath}/article_manage/findByCondition.do?size=5&page=1">
+                        <form method="get" id="articleSearchForm" action="${pageContext.request.contextPath}/article_manage/findByCondition.do?size=5&page=1">
                             <table>
                                 <tr>
                                     <th>
@@ -235,7 +235,7 @@
         })
     }
     function searchArticle(e) {
-        location.href="${pageContext.request.contextPath}/article_manage/findByPage.do?size=5&page="+e;
+        location.href="${pageContext.request.contextPath}/article_manage/findByCondition.do?senderName=${condition.senderName}&title=${condition.title}&size=5&page="+e;
     }
 </script>
 </body>

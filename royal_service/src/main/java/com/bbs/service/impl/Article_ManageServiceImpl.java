@@ -35,9 +35,6 @@ public class Article_ManageServiceImpl implements Article_ManageService {
     public List<Article> findByCondition(int page,int size,Article article) throws Exception{
         PageHelper.startPage(page, size);
         List<Article> articles = articleManageDao.findBySearch(article);
-        for (Article article1 : articles) {
-            System.out.println("======="+article1.getTitle());
-        }
         return  articles;
 
     }
