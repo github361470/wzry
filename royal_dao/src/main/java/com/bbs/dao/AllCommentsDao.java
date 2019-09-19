@@ -2,10 +2,7 @@ package com.bbs.dao;
 
 import com.bbs.domain.Comment;
 import com.bbs.domain.User;
-import org.apache.ibatis.annotations.One;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ public interface AllCommentsDao {
             @Result(property = "commentStatus",column = "commentStatus"),
             @Result(property = "articleId",column = "articleId"),
             @Result(property = "user",column = "commentUserName",javaType = User.class,one = @One(select = "com.bbs.dao.CommentUserDao.findUserByName")),
+            @Result(property = "replies",column = "commentId",javaType = List.class,many=@Many(select = "com.bbs.dao.AllReplyDao.findAllReplyByCommentId")),
 
 
 

@@ -15,19 +15,19 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/hm-bbs.js"></script>
 
     <style>
-        .floor-con .icon-report i{
+        .floor-con .icon-report i {
             background-position: -64px -16px;
         }
 
-        .floor-con .icon-like0 i{
+        .floor-con .icon-like0 i {
             background-position: 0px 0px;
         }
 
-        .floor-con .icon-feedback1 i{
+        .floor-con .icon-feedback1 i {
             background-position: -112px -32px;
         }
 
-        .floor-con .icon-comment,.floor-con .icon-feedback ,.floor-con .icon-report ,.floor-con .icon-feedback1{
+        .floor-con .icon-comment, .floor-con .icon-feedback, .floor-con .icon-report, .floor-con .icon-feedback1 {
             position: absolute;
             right: 10px;
             bottom: 10px;
@@ -39,6 +39,9 @@
 
 
 <body>
+
+
+
 
 
 <!-- 头部 -->
@@ -118,15 +121,17 @@
                         <span class="icon-comment"><a href="#comment"> <i></i> 评论</a></span>--%>
 
                         <span id="myUpVote" class="icon-feedback" style="right: 150px"><a
-                                href="javascript:void(0)" id="collect" > <i></i> 点赞</a></span>
-                        <span class="icon-report"><a href="javascript:inspect(0)"> <i></i> 举报</a></span>
+                                href="javascript:void(0)" id="collect"> <i></i> 点赞</a></span>
+                        <span class="icon-report"><a href="javascript:;"  onclick="showDialog2()"> <i></i> 举报</a></span>
                         <span class="icon-comment" style="right: 80px"><a
-                                href="javaScript:inspect()"> <i></i> 评论</a></span>
+                                href="#comment" id="newTopic"> <i></i> 评论</a></span>
+
 
                     </div>
                 </li>
 
 
+`
                 <c:forEach items="${article.comments}" var="comment" varStatus="s">
                 <!-- 评论部分,一楼及以后 -->
                 <li class="floor clearfix">
@@ -148,16 +153,21 @@
 
 
                             <div class="floor-ans">
-                                <ul>
 
-                                    <!-- 回复部分,楼中楼 -->
-                                    <li class="clearfix">
-                                        <div class="floor-ans-pho l"><img src="images/default.png"/></div>
-                                        <div class="floor-ans-con l">
-                                            <span class="name">张无忌</span>：顶顶顶！
-                                            <span class="ans-time">2017-05-24 10:11:00</span>
-                                        </div>
-                                    </li>
+                                <ul>
+                                <!-- 回复部分,楼中楼 -->
+                                    <c:forEach items="${comment.replies}" var="reply">
+
+                                        <li class="clearfix">
+                                            <div class="floor-ans-pho l"><img src="${reply.user.picUrl}"/></div>
+                                            <div class="floor-ans-con l">
+                                                <span class="name">${reply.replyUserName}</span>：${reply.replyContent}
+                                                <span class="ans-time">${reply.replyTimeStr}</span>
+                                            </div>
+                                        </li>
+
+                                    </c:forEach>
+
 
 
                                 </ul>
@@ -165,25 +175,28 @@
 
 
                             <span class="icon-comment">
-                                <a href="javascript:;" onclick="showDialog(1)"> <i></i> 回复</a>
+                                <a href="javascript:;" onclick="showDialog(${s.count},${commentId})"> <i></i> 回复</a>
                             </span>
                         </div>
                     </div>
                 </li>
                 </c:forEach>
 
-
+                <%--评论判断--%>
+                <c:if test="${ not empty user}">
                 <!--发表评论-->
                 <div class="detail-to-comment">
                     <div class="tit"><a name="comment">发表评论</a></div>
                     <!-- 未登录时候显示 <div class="con">您没有登录论坛，请登录后再进行回复</div>-->
 
                     <!-- 登录后显示评论输入框-->
-                    <form action="#" method="post">
+                    <form action="${pageContext.request.contextPath}/comments/saveComment.do" method="post" onsubmit="return checkReport();" >
                         <div class="con con-loged">
                             <div class="con-t">
                                 <textarea id="content" name="commentContent" placeholder="请在此输入您要回复的信息"></textarea>
                             </div>
+                            <input type="hidden" name="username" value="${user.userName}">
+                            <input type="hidden" name="articleId" value="${article.articleId}">
                             <div class="con-b">
                                 <input type="submit" class="btn"/>
                                 <span class="num">不能超过5000字</span>
@@ -191,6 +204,7 @@
                         </div>
                     </form>
                 </div>
+                </c:if>
         </div>
     </div>
 
@@ -199,9 +213,11 @@
     <jsp:include page="common/footer.jsp"/>
 
 
+
+
     <!-- 回复弹出框 -->
-    <form action="" method="post">
-        <div class="pop-box ft-box">
+    <form action="${pageContext.request.contextPath}/replys/saveReply.do" method="post" onsubmit="return check();">
+        <div class="pop-box ft-box" id="huifu">
             <div class="mask"></div>
             <div class="win">
                 <div class="win_hd">
@@ -217,6 +233,8 @@
                     <div class="win_ft_in">
                         <input type="submit" class="btn" value="回复"/>
                         <input type="hidden" id="commentId" name="commentId"/>
+                        <input type="hidden" name="username" value="${user.userName}">
+                        <input type="hidden" name="articleId" value="${article.articleId}">
                     </div>
                 </div>
             </div>
@@ -224,8 +242,38 @@
     </form>
 
 
+    <!-- 举报帖子弹出框 -->
+    <form action="${pageContext.request.contextPath}/report/reportByName.do" method="post" onsubmit="return inspect();">
+        <div class="pop-box ft-box" id="jubaopinglun">
+            <div class="mask"></div>
+            <div class="win">
+                <div class="win_hd">
+                    <h4 class="l">举报该贴</h4>
+                    <span class="close r">&times;</span>
+                </div>
+                <div class="win_bd">
+                    <div class="win_bd_b">
+                        <textarea id="replyContent4" name="replyContent" placeholder="举报内容限于40字以内"></textarea>
+                    </div>
+                </div>
+                <div class="win_ft">
+                    <div class="win_ft_in">
+                        <input type="submit" class="btn" value="举报"/>
+                        <input type="hidden" id="commentId2" name="commentId"/>
+                        <input type="hidden" name="username" value="${user.userName}">
+                        <input type="hidden" name="articleId" value="${article.articleId}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
     <div class="fixedBar" id="j_fixedBar">
-        <a href="#comment" class="newTopic"><span></span>回复</a>
+        <a href="#comment" class="newTopic"><span></span>评论</a>
         <a href="#" class="goTop"><i></i><span>返回<br/>顶部</span></a>
     </div>
 
@@ -233,57 +281,79 @@
 </body>
 
 <script type="text/javascript">
+
     //弹出回复框
     function showDialog(num, commentId) {
-        var loginUser = "${loginUser}";
+        //判断用户是否登录
+        var loginUser = "${user}";
         if (!loginUser) {
             alert("请登录");
             return;
         }
         $("#commentId").val(commentId);
-        $('.pop-box').css('display', 'block');
+        $("#huifu").css('display', 'block');
         $("#floorSpan").html(num);
     }
 
 
-    //点击收藏，发送ajax
 
+
+    //弹出举报帖子框
+    function showDialog2(num, commentId) {
+        //判断用户是否登录
+        var loginUser = "${user}";
+        if (!loginUser) {
+            alert("请登录");
+            return;
+        }
+        $("#commentId2").val(commentId);
+        $("#jubaopinglun").css('display', 'block');
+    }
+
+
+
+
+    //点击收藏，发送ajax
 
     $("#collect").click(
         function () {
             var attr = $("#collect").parent().attr("class");
-
-            if (false) {
+            if (${empty user}) {
                 alert("请先登录");
+                return false;
             }
 
 
+
             //icon-feedback  icon-111
-            else if (attr == 'icon-feedback') {
-                $("#collect").parent().attr("class",'icon-feedback1');
+        else
+            if (attr == 'icon-feedback') {
+                $("#collect").parent().attr("class", 'icon-feedback1');
 
                 alert('icon-feedback');
 
-              $.ajax({
+                $.ajax({
                     type: "post",
-                    url: "${pageContext.request.contextPath}/upvote/saveUpvote.do?articleId=" +${article.articleId} + "&upvoteUserName=xiaobao",
+                    url: "${pageContext.request.contextPath}/upvote/saveUpvote.do?articleId=" + ${article.articleId} +"&upvoteUserName=xiaobao",
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
                     success: function (data) {
+                        location.reload();
 
                     }
                 });
 
             } else if (attr == 'icon-feedback1') {
-                $("#collect").parent().attr("class",'icon-feedback');
-                alert('icon-111');
+                $("#collect").parent().attr("class", 'icon-feedback');
+                alert('icon-feedback1');
 
-            $.ajax({
+                $.ajax({
                     type: "post",
-                    url: "${pageContext.request.contextPath}/upvote/deleteUpvote.do?articleId=" +${article.articleId} + "&upvoteUserName=xiaobao",
+                    url: "${pageContext.request.contextPath}/upvote/deleteUpvote.do?articleId=" + ${article.articleId} +"&upvoteUserName=xiaobao",
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
                     success: function (data) {
+                        location.reload();
                     }
                 });
 
@@ -292,5 +362,84 @@
 
         }
     )
+
+
+
+    <%--评论先判断是否有用户--%>
+    $(".newTopic").click(function () {
+
+        if (${empty user}) {
+            alert("请先登录");
+            return false;
+        }
+        if (${user.talkStatus == 1}){
+            alert("您已被禁言，不能进行评论");
+            return false;
+        }
+    });
+
+    $("#newTopic").click(function () {
+
+        if (${empty user}) {
+            alert("请先登录");
+            return false;
+        }
+        if (${user.talkStatus == 1}){
+            alert("您已被禁言，不能进行评论");
+            return false;
+        }
+    });
+
+
+
+
+    <%--评论前先判断是否，禁言，数据--%>
+   function  checkReport(){
+
+
+       var content = $("#content").val();
+       if (content == "" || content.length == 0 ) {
+           alert("评论内容不能为空");
+           return false;
+       }
+       if (content.length >=30) {
+           alert("评论内容过长");
+           return false;
+       }
+   }
+
+
+
+
+    <%--回复先判断是否有数据--%>
+    function check() {
+        var content = $("#replyContent").val();
+        if (content == "" || content.length == 0 ) {
+            alert("回复内容不能为空");
+            return false;
+        }
+        if (content.length >=30) {
+            alert("回复内容过长");
+            return false;
+        }
+    }
+
+
+    //举报功能
+    function inspect() {
+     /*   $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/report/reportByName.do?userName=${user.userName}",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                alert("举报已提交!")
+            }
+        });*/
+    }
+
+
+
+
 </script>
 </html>

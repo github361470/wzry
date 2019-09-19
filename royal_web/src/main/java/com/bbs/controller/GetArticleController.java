@@ -19,7 +19,7 @@ public class GetArticleController {
 
 
     /**
-     * 携带article信息跳转到帖子页面(通过发帖人姓名)
+     * 发帖后跳转：携带article信息跳转到帖子页面(通过发帖人姓名)
      *
      * @param senderName
      * @return

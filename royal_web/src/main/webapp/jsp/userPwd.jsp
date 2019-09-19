@@ -22,7 +22,7 @@
 <jsp:include page="common/header.jsp" />
 
 
-
+<%--
 <!--头部信息-->
 <div class="hm-header">
     <div class="hm-inner clearfix">
@@ -42,7 +42,7 @@
             <a href="index.do">首页</a><span>></span>修改密码
         </div>
     </div>
-</div>
+</div>--%>
 
 
 <!--修改密码-->
@@ -52,22 +52,40 @@
             <div class="user-info-t" style="height:20px;"></div>
             <div class="user-info-l l">
                 <div class="user-info-l-t">
-                    <img src="images/default.png" alt=""/>
-                    <div class="username">张无忌</div>
+                    <img src="${pageContext.request.contextPath}${user.picUrl}"/>
                 </div>
-                <ul class="user-info-l-b">
+                <ul class="user-info-l-b"><%--user-info-l-b--%>
+                    <li><i class="info-icon"></i>${user.userName}</li>
                     <li><i class="info-icon"></i>我的资料</li>
                     <li class="cur"><i class="safe-icon"></i>修改密码</li>
+                    <li><i class="safe-icon"></i> <c:choose>
+                        <c:when test="${user.role eq 1}">
+                            申请高级用户
+                        </c:when>
+                        <c:otherwise>
+                            开辟新版块
+                        </c:otherwise>
+                    </c:choose></li>
                 </ul>
             </div>
 
 
             <div class="user-info-r r">
                 <ul class="clearfix hd">
-                    <li><a href="getUser.do?method=userInfo">个人信息</a></li>
-                    <li class="cur"><a href="getUser.do?method=userPwd">修改密码</a></li>
+                    <li ><a href="${pageContext.request.contextPath}/user/userInfo.do">个人信息</a></li>
+                    <li class="cur"><a href="${pageContext.request.contextPath}/user/userPwd.do">修改密码</a></li>
+                    <li>
+                        <c:choose>
+                            <c:when test="${user.role eq 1}">
+                                <a href="${pageContext.request.contextPath}/user/accessControl.do">申请高级用户</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/user/userPwd.do"> 开辟新版块</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </li>
                 </ul>
-                <form action="#" method="post">
+                <form action="${pageContext.request.contextPath}/user/updatePassword.do" method="post">
                   <ul class="bd">
                     <li class="clearfix">
                         <div class="info-l"><i class="red">*</i>旧密码：</div>
@@ -81,7 +99,7 @@
                         <div class="info-l"></div>
                         <div class="info-r">
 						  <input type="submit" class="btn" value="保存"/>
-						  <span style="color:red;">修改成功！</span>
+						  <span id="msg" style="display: none"></span>
 						</div>
                     </li>
                   </ul>
@@ -93,7 +111,29 @@
 
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
+<script type="text/javascript">
 
+    $(function () {
+        console.log(${result.success});
+        if(${result.success}){
+            $("#msg").html("修改成功!");
+            $("#msg").css("color","green");
+            $("#msg").show();
+            setTimeout(function () {
+                $("#msg").hide();
+            },3000)
+        }else{
+            $("#msg").html("密码错误修改失败");
+            $("#msg").css("color","red");
+            $("#msg").show();
+            setTimeout(function () {
+                $("#msg").fadeOut("slow");
+            },3000)
+        }
+    })
+
+
+</script>
 
 </body>
 </html>

@@ -15,13 +15,21 @@ public class UpvoteServiceImpl implements UpvoteService {
     private UpvoteDao upvoteDao;
 
     @Override
-    public void changeUpvote(String upvoteUserName, String articleId ) {
-        upvoteDao.changeUpvote(upvoteUserName,articleId);
+    public void changeUpvote(String upvoteUserName, String articleId) {
+        //点击收藏
+        upvoteDao.changeUpvote(upvoteUserName, articleId);
+        Integer upvoteCount = upvoteDao.getUpvoteCount(Integer.parseInt(articleId));
+        Integer integer = upvoteDao.SetUpvoteCount(upvoteCount, articleId);
+
+
 
     }
 
     @Override
     public void deleteUpvote(String upvoteUserName, String articleId) {
-        upvoteDao.deleteUpvote(upvoteUserName,articleId);
+        //点击删除
+        upvoteDao.deleteUpvote(upvoteUserName, articleId);
+        Integer upvoteCount = upvoteDao.getUpvoteCount(Integer.parseInt(articleId));
+        Integer integer = upvoteDao.SetUpvoteCount(upvoteCount, articleId);
     }
 }

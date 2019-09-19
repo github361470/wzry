@@ -17,4 +17,9 @@ public class SearchServiceImpl implements SearchService {
     public List<Article> searchArticle(String title,String zoneId) {
         return searchDao.searchArticle(title,zoneId);
     }
+
+    @Override
+    public String searchTalkStatus(String userName) {
+        return searchDao.searchTalkStatus(userName);
+    }
 }

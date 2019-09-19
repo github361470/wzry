@@ -46,6 +46,7 @@
 
 
 
+
 <div class="hm-body hm-body-bgc">
     <div class="hm-inner">
         <div class="user-info clearfix">
@@ -55,13 +56,13 @@
             <div class="user-info-l l">
                 <div class="user-info-l-t">
                     <img src="${pageContext.request.contextPath}${user.picUrl}"/>
-<%--                    <div class="userName">${user.userName}</div>--%>
+                    <%--                    <div class="userName">${user.userName}</div>--%>
                 </div>
                 <ul class="user-info-l-b">
                     <li><i class="username"></i>${user.userName}</li>
-                    <li class="cur"><i class="info-icon"></i>我的资料</li><%--info-icon--%>
+                    <li ><i class="info-icon"></i>我的资料</li><%--info-icon--%>
                     <li><i class="safe-icon"></i>修改密码</li>
-                    <li><i class="safe-icon"></i> <c:choose>
+                    <li class="cur"><i class="safe-icon"></i> <c:choose>
                         <c:when test="${user.role eq 1}">
                             申请高级用户
                         </c:when>
@@ -76,40 +77,41 @@
             <!--右侧用户信息-->
             <div class="user-info-r r">
                 <ul class="clearfix hd">
-                    <li class="cur"><a href="${pageContext.request.contextPath}/user/userInfo.do">个人信息</a></li>
+                    <li ><a href="${pageContext.request.contextPath}/user/userInfo.do">个人信息</a></li>
                     <li><a href="${pageContext.request.contextPath}/user/userPwd.do">修改密码</a></li>
-                    <li>
+                    <li class="cur">
                         <c:choose>
                             <c:when test="${user.role eq 1}">
                                 <a href="${pageContext.request.contextPath}/user/accessControl.do">申请高级用户</a>
                             </c:when>
                             <c:otherwise>
-                                 <a href="${pageContext.request.contextPath}/user/userPwd.do"> 开辟新版块</a>
+                                <a href="${pageContext.request.contextPath}/user/userPwd.do"> 开辟新版块</a>
                             </c:otherwise>
                         </c:choose>
                     </li>
                 </ul>
 
 
-                <form action="${pageContext.request.contextPath}/user/userInfoUpdate.do" method="post" enctype="multipart/form-data">
+                <form id="form" method="post" >
                     <ul class="bd">
                         <li class="clearfix">
-                            <div class="info-l"><i class="red">*</i>用户名：</div>
-                            <div class="info-r"><input type="text" class="txt" value="${user.userName}" readonly="readonly"/></div>
+                            <div class="info-l red" style="">高级特权</div>
+                            <div class="info-l " style="text-align: center">开辟新版块</div>
                         </li>
                         <li class="clearfix">
-                            <div class="info-l">邮箱地址：</div>
-                            <div class="info-r"><input type="text" name="email" class="txt" value="${user.email}"/></div>
+                            <div class="info-l red">申请条件</div>
+                            <div class="info-l" style="text-align: center">发帖数&gt;5</div>
                         </li>
                         <li class="clearfix">
-                            <div class="info-l">上传头像：</div>
-                            <div class="info-r"><input type="file" name="picUrl" class="file-btn"/></div>
+                            <div class="info-l red">当前发帖数</div>
+                            <div class="info-l" style="text-align: center"></div>
                         </li>
+
                         <li class="clearfix">
-                            <div class="info-l"></div>
+                            <div class="info-l red"></div>
                             <div class="info-r">
-                                <input type="submit" class="btn" value="保存"/>
-                                <span  id="msg" style="color:green;display: none">修改成功！</span>
+                                <input type="button" class="btn" value="申请" onclick="sub();"/>
+                                <span  id="msg" style="color:green;display: none">申请成功等待管理员响应</span>
                             </div>
                         </li>
                     </ul>
@@ -126,21 +128,19 @@
 
 <!-- 底部 -->
 <jsp:include page="common/footer.jsp"/>
-
-
 <script type="text/javascript">
 
+    function sub() {
+        $("#form").click(function () {
 
-    <!--显示修改成功-->
-  $(function () {
-      console.log(${result.success});
-      if(${result.success}){
-          $("#msg").show();
-          setTimeout(function () {
-              $("#msg").hide();
-          },3000)
-      }
-  })
+
+            //
+            var form = $("#form");
+            form.attr("action","/user/register.do")
+            form.submit();
+        })
+    }
+   
 
 
 

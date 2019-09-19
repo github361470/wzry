@@ -62,30 +62,30 @@
             </li>
 
 
-                <c:if test="${zoneId==2}">
-                <li class="current">
-                    </c:if>
-                    <c:if test="${zoneId!=2}">
-                <li>
-                    </c:if>
+            <c:if test="${zoneId==2}">
+            <li class="current">
+                </c:if>
+                <c:if test="${zoneId!=2}">
+            <li>
+                </c:if>
                 <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=2"><em></em>BUG反馈区</a>
             </li>
 
-                <c:if test="${zoneId==3}">
-                <li class="current">
-                    </c:if>
-                    <c:if test="${zoneId!=3}">
-                <li>
-                    </c:if>
+            <c:if test="${zoneId==3}">
+            <li class="current">
+                </c:if>
+                <c:if test="${zoneId!=3}">
+            <li>
+                </c:if>
                 <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=3"><em></em>新闻公告区</a>
             </li>
 
-                <c:if test="${zoneId==4}">
-                <li class="current">
-                    </c:if>
-                    <c:if test="${zoneId!=4}">
-                <li>
-                    </c:if>
+            <c:if test="${zoneId==4}">
+            <li class="current">
+                </c:if>
+                <c:if test="${zoneId!=4}">
+            <li>
+                </c:if>
                 <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=4"><em></em>活动专区</a>
             </li>
         </ul>
@@ -122,7 +122,8 @@
                             <li class="clearfix ding ">
                         </c:if>
                         <div class="hm-index-title">
-                            <i class="set-to-top">顶</i> <a href="${pageContext.request.contextPath}/getArticle/findDetailArticleById.do?articleId=${article.articleId}">${article.title}</a>
+                            <i class="set-to-top">顶</i> <a
+                                href="${pageContext.request.contextPath}/getArticle/findDetailArticleById.do?articleId=${article.articleId}">${article.title}</a>
                         </div>
                         <div class="hm-index-con">${article.content}</div>
                         <div class="hm-index-info l">
@@ -167,41 +168,47 @@
 
 <!-- 右边发帖，回顶部 -->
 <div class="fixedBar" id="j_fixedBar">
-    <a id="newTopicBtn" href="javascript:;"  class="newTopic"><span></span>发帖</a>
+    <a id="newTopicBtn" href="javascript:;" class="newTopic"><span></span>发帖</a>
 
-    <a href="#" class="goTop"><i> </i><span>返回<br/>顶部</span></a>
+    <a href="#" class="goTop"><i> </i><span>返回<br/>部</span></a>
 </div>
 
 
 <!-- 发帖弹出框 -->
-<form action="${pageContext.request.contextPath}/send/sendArticle.do" method="post">
-    <div class="pop-box ft-box">
-        <div class="mask"></div>
-        <div class="win">
-            <div class="win_hd">
-                <h4 class="l">主题帖</h4><span class="close r">&times;</span>
-            </div>
-            <%--需要zoneId提交到对应的区域--%>
-            <input type="hidden" name="zoneId" value="${zoneId}">
-            <%--伪代码 需要用户名--%>
-            <input type="hidden" name="username" value="xiaobao">
-            <div class="win_bd">
-                <div class="win_bd_t">
-                    <input type="text" id="title" name="title" placeholder="帖子标题"/>
+<%--发帖判断  $$ ${user.talkStatus == 0} "${channelItem.itemTag =='channel_name'|| channelItem.itemTag =='mobile'}" --%>
+<c:if test="${not empty user}">
+<c:if test="${user.talkStatus == '0'}">
+<form action="${pageContext.request.contextPath}/send/sendArticle.do" method="post" onsubmit="return check();">
+        <div class="pop-box ft-box">
+
+            <div class="mask"></div>
+            <div class="win">
+                <div class="win_hd">
+                    <h4 class="l">主题帖</h4><span class="close r">&times;</span>
                 </div>
-                <div class="win_bd_b">
-                    <textarea id="content" name="content" placeholder="正文"></textarea>
+                <%--需要zoneId提交到对应的顶区域--%>
+                <input type="hidden" name="zoneId" value="${zoneId}">
+                <%--伪代码 需要用户名--%>
+                <input type="hidden" name="username" value="${user.userName}">
+                <div class="win_bd">
+                    <div class="win_bd_t">
+                        <input type="text" id="title" name="title" placeholder="帖子标题"/>
+                    </div>
+                    <div class="win_bd_b">
+                        <textarea id="content" name="content" placeholder="正文"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="win_ft">
-                <div class="win_ft_in">
-                    <input type="submit" class="btn" value="发表"/>
+                <div class="win_ft">
+                    <div class="win_ft_in">
+                        <input type="submit" class="btn" value="发表"/>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </form>
-
+</c:if>
+</c:if>
 
 <script>
 
@@ -257,17 +264,35 @@
     });
 
 
-    <%--发帖先判断是否有用户--%>
-$(".btn").click(function () {
-    
-    if (false){
-        alert("请先登录");
-        location.href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1";
+    <%--发帖先判断是否被禁言，是否有用户--%>
+    $(".newTopic").click(function () {
+        if (${empty user}) {
+            alert("请先登录");
+            return false;
+        }
+        if(${user.talkStatus == 1}){
+            alert("您已被禁言，不能进行发帖");
+            return false;
+        }
+
+
+    });
+
+    <%--发帖先判断是否有数据--%>
+    function check() {
+
+        var title = $("#title").val();
+        var content = $("#content").val();
+        if (title == "" || title.length == 0 || content == "" || content.length == 0) {
+            alert("请输入帖子标题和正文");
+            return false;
+        }
+        if (title.length >= 11) {
+            alert("帖子标题过长，请修改！");
+            return false;
+        }
+
     }
-})
-
-
-
 
 
 </script>

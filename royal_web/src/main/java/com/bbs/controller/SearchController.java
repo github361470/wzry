@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -39,4 +40,14 @@ public class SearchController {
         mv.setViewName("index");
         return mv;
     }
+
+
+    @RequestMapping("/searchTalkStatus.do")
+    public @ResponseBody String searchTalkStatus(@RequestParam(name = "userName") String userName){
+       String talkStatus= searchService.searchTalkStatus(userName);
+        System.out.println(talkStatus);
+       return talkStatus;
+    }
+
+
 }

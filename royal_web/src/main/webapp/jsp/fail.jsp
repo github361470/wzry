@@ -10,10 +10,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/search.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.2.min.js"></script>
-
-
-
-
 </head>
 <body>
 
@@ -42,11 +38,10 @@
 <div class="hm-body hm-body-bgc">
         <div class="hm-inner"> 
             <div class="reg-box" style="text-align:center;height:200px;padding-top:100px;">
-                <h2>恭喜您，注册成功！</h2>
+                <h2>注册失败！</h2>
                 <%--自动跳转--%>
                 <div><h1><span id="time">5</span>秒后自动跳转....</h1></div>
             </div>
-
         </div>
     </div>
 

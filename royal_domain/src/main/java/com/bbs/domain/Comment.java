@@ -3,6 +3,7 @@ package com.bbs.domain;
 import com.bbs.utils.DateUtils;
 
 import java.util.Date;
+import java.util.List;
 
 public class Comment {
 
@@ -13,8 +14,11 @@ public class Comment {
     private String commentUserName;//评论人
     private Integer commentStatus;//'评论状态，1代表屏蔽，0代表解除'
     private Integer articleId;//帖子编号
-    //需要查询评论人的信息
+    //需要查询评论人的信息，关联user表
     private User user;
+
+    //关联reply表(一条评论有多条回复)
+    private List<Reply> replies;
 
     public Integer getCommentId() {
         return commentId;
@@ -83,5 +87,13 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 }
