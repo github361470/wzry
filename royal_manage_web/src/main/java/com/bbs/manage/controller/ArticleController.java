@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -58,8 +56,10 @@ public class ArticleController {
     @RequestMapping("/deleteArticle.do")
     public String deleteArticle(@RequestParam(name = "id")int articleId,
                                 @RequestParam(name = "page")int page) throws Exception{
-        articleManageService.changeIsReport(articleId);
+
+            articleManageService.changeIsReport(articleId);
         return "redirect:findByPage.do?size=5&page="+page;
+
     }
 
     /**
@@ -69,10 +69,17 @@ public class ArticleController {
      * @return
      */
     @RequestMapping("/changeStatus.do")
-    public String changeStatus(@RequestParam(name = "id")int articleId,
-                               @RequestParam(name = "page")int page) throws Exception{
-        articleManageService.changeStatus(articleId);
-        return "redirect:findByPage.do?size=5&page="+page;
+    @ResponseBody
+    public boolean changeStatus(@RequestParam(name = "id")int articleId,
+                               @RequestParam(name = "page")int page){
+        try {
+            articleManageService.changeStatus(articleId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        /* return "redirect:findByPage.do?size=5&page="+page;*/
+        return true;
     }
 
     /**

@@ -46,4 +46,7 @@ public interface User_ManageDao {
 
     @Update("update bbs_user_table set role=2,updateStatus=1 where userId=#{id}")
     void changeGrade(int userId) throws Exception;
+
+    @Select("select * from bbs_user_table where userName=#{username}")
+    public User findByUsername(String username) throws Exception;
 }

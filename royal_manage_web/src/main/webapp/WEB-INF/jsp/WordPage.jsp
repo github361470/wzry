@@ -6,9 +6,9 @@
 
 </head>
 <style type="text/css">
-    html,body{
-        overflow:auto;
-        height:100%;
+    html, body {
+        overflow: auto;
+        height: 100%;
     }
 
     .line-limit-length {
@@ -26,19 +26,19 @@
 <body>
 <div class="hrms_dept_container">
     <!-- 导航栏-->
-    <%@ include file="../../jsp/commom/head.jsp"%>
+    <%@ include file="../../jsp/commom/head.jsp" %>
 
 
     <!-- 中间部分（左侧栏+表格内容） -->
     <div class="hrms_dept_body">
         <!-- 左侧栏 -->
-        <%@ include file="../../jsp/commom/leftsidebar.jsp"%>
+        <%@ include file="../../jsp/commom/leftsidebar.jsp" %>
 
         <!-- 表格内容 -->
         <div class="dept_info col-sm-10">
             <div class="panel panel-success">
                 <!-- 路径导航 -->
-                <div >
+                <div>
                     <ol class="breadcrumb">
                         <li><a href="#">用户帖管理</a></li>
                         <li class="active">敏感词汇管理</li>
@@ -48,16 +48,10 @@
                 <!-- Table -->
                 <div>
                     <div style="float: left">
-                        <form method="get" id="articleSearchForm">
-                            <table>
-                                <tr>
-                                    <th colspan="2">
-                                        <input type="button" value="新增敏感词" class="form-control btn-primary">
-                                    </th>
-                                </tr>
-                            </table>
-
-                        </form>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#word_detail"
+                                onclick="article_Detail('${report.article.articleId}')">
+                            新增敏感词
+                        </button>
                     </div>
                 </div>
                 <div style="clear:both"></div>
@@ -72,28 +66,32 @@
                     </tr>
                     </thead>
                     <tbody>
-                            <tr>
-                                <td width="15%">${word.wordId}</td>
-                                <td width="30%" class="line-limit-length">${word.word} </td>
-                                <td width="15%" class="line-limit-length">${word.statusStr}</td>
-                                <td width="15%">
-                                    <a href="" role="button" class="btn btn-primary">启用</a>
+                    <c:forEach items="${wordsPage.list}" var="word">
+                        <tr id="tr_${word.wordId}">
+                            <td width="15%" id="id">${word.wordId}</td>
+                            <td width="30%" class="line-limit-length">${word.word} </td>
+                            <td width="15%" class="line-limit-length" id="statusStr_${word.wordId}">${word.statusStr}</td>
+                            <td width="15%">
+                                <c:if test="${word.status==1}">
+                                    <a href="javaScript:on('${word.wordId}','${wordsPage.pageNum}')" role="button" id="top_${word.wordId}" class="btn btn-primary">停用</a>
+                                    <a href="javaScript:off('${word.wordId}','${wordsPage.pageNum}')" role="button" id="notop_${word.wordId}"class="btn btn-danger" style="display:none;">启用</a>
+                                </c:if>
+                                <c:if test="${word.status==0}">
+                                    <a href="javaScript:on('${word.wordId}','${wordsPage.pageNum}')" role="button" id="top_${word.wordId}" class="btn btn-primary" style="display:none;">停用</a>
+                                 <a href="javaScript:off('${word.wordId}','${wordsPage.pageNum}')" role="button" id="notop_${word.wordId}" class="btn btn-danger">启用</a>
+                                </c:if>
 
-                                    <a href="" role="button" class="btn btn-danger" >停用</a>
-
-                                </td>
-                            </tr>
-
+                            </td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
-
-
             </div><!-- /.panel panel-success -->
             <!--显示分页信息-->
             <div class="row">
                 <!--文字信息-->
                 <div class="col-md-6">
-                    当前第 ${articleMsgs.pageNum} 页.总共 ${articleMsgs.pages} 页.一共 ${articleMsgs.total} 条记录
+                    当前第 ${wordsPage.pageNum} 页.总共 ${wordsPage.pages} 页.一共 ${wordsPage.total} 条记录
                 </div>
 
                 <!--点击分页-->
@@ -104,44 +102,81 @@
                             <li><a href="#" onclick="searchArticle(1)">首页</a></li>
                             <!--上一页-->
                             <li>
-                                <c:if test="${articleMsgs.hasPreviousPage}">
-                                        <a href="#" onclick="searchArticle('${articleMsgs.pageNum-1}')" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
-                                        </a>
-                                </c:if>
+                                <a href="#" onclick="searchArticle('${wordsPage.pageNum-1}')" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
                             </li>
-
-                            <c:forEach items="${articleMsgs.navigatepageNums}" var="page_num">
-                                <c:if test="${page_num == articleMsgs.pageNum}">
-                                    <li class="active"><a href="#">${page_num}</a></li>
-                                </c:if>
-                                <c:if test="${page_num != articleMsgs.pageNum}">
-                                    <li><a href="#" onclick="searchArticle('${page_num}')">${page_num}</a></li>
-                                </c:if>
+                            <c:forEach items="${wordsPage.navigatepageNums}" var="page_num">
+                                <li><a href="#" onclick="searchArticle('${page_num}')">${page_num}</a></li>
                             </c:forEach>
 
                             <!--下一页-->
                             <li>
-                                <c:if test="${articleMsgs.hasNextPage}">
-                                    <a href="javascript:void(0)" onclick="searchArticle('${articleMsgs.pageNum+1}')"
-                                       aria-label="Next">
-                                        <span aria-hidden="true">»</span>
-                                    </a>
-                                </c:if>
+                                <a href="javascript:void(0)" onclick="searchArticle('${wordsPage.pageNum+1}')"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
                             </li>
-                            <li><a href="javascript:void(0)" onclick="searchArticle('${articleMsgs.pages}')">尾页</a></li>
+                            <li><a href="javascript:void(0)" onclick="searchArticle('${wordsPage.pages}')">尾页</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
         </div><!-- /.dept_info -->
         <!-- 尾部-->
-        <%@ include file="../../jsp/commom/foot.jsp"%>
+        <%@ include file="../../jsp/commom/foot.jsp" %>
     </div><!-- /.hrms_dept_body -->
+    <%@include file="WordUpdate.jsp"%>
 
 </div><!-- /.hrms_dept_container -->
+<script>
 
-<%--<%@ include file="ArticleAdd.jsp"%>--%>
-<%--<%@ include file="ArticleUpdate.jsp"%>--%>
+    function on(articleId,page) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/word/Word_On.do",
+            type:"POST" , //请求方式
+            data:{"id":articleId,
+                "page":page},
+            success:function (data) {
+                if (data){
+                   $("#top_"+articleId).hide();
+                   $("#notop_"+articleId).show();
+
+                    $("#statusStr_"+articleId).text("禁用")
+                }
+            },//响应成功后的回调函数
+            error:function () {
+                alert("出错啦...")
+            },//表示如果请求响应出现错误，会执行的回调函数
+            dataType:"json",//设置接受到的响应数据的格式
+        })
+    }
+    function off(articleId,page) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/word/Word_Off.do",
+            type:"POST" , //请求方式
+            data:{"id":articleId,
+                "page":page},
+            success:function (data) {
+                if (data){
+                    $("#notop_"+articleId).hide();
+                    $("#top_"+articleId).show();
+                    $("#statusStr_"+articleId).text("使用中")
+
+                }
+            },//响应成功后的回调函数
+            error:function () {
+                alert("出错啦...")
+            },//表示如果请求响应出现错误，会执行的回调函数
+            dataType:"json",//设置接受到的响应数据的格式
+        })
+    }
+
+    function searchArticle(e) {
+        location.href = "${pageContext.request.contextPath}/word/findByPage.do?size=5&page=" + e;
+    }
+
+
+</script>
 </body>
 </html>

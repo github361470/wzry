@@ -13,6 +13,7 @@ public interface Report_ManageDao {
      * 查找未处理的举报列表
      * @return
      */
+   // @Select("select * from bbs_report_table where reportStatus=1 and articleId not in (select articleId from bbs_article_table where isReport=1)")
     @Select("select * from bbs_report_table where reportStatus=1")
     @Results({
             @Result(id = true,column = "reportId",property = "reportId"),

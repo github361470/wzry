@@ -37,9 +37,9 @@ public class ZoneApplyController {
      * @return
      */
     @RequestMapping("/pass.do")
-    public String pass(@RequestParam(name = "page",defaultValue = "1",required = true)int page,
+    public String  pass(@RequestParam(name = "page",defaultValue = "1",required = true)int page,
                        @RequestParam(name = "id",required = true)int id) throws Exception{
-        z_mService.passZone(id);
+            z_mService.passZone(id);
         return "redirect:findByPage.do?size=5&page="+page;
     }
 
@@ -48,9 +48,11 @@ public class ZoneApplyController {
      * @return
      */
     @RequestMapping("/reject.do")
-    public String reject(@RequestParam(name = "page",defaultValue = "1",required = true)int page,
+    public String  reject(@RequestParam(name = "page",defaultValue = "1",required = true)int page,
                          @RequestParam(name = "id",required = true)int id) throws Exception{
-        z_mService.changeStatus(id);
+
+            z_mService.changeStatus(id);
+
         return "redirect:findByPage.do?size=5&page="+page;
     }
 

@@ -58,8 +58,15 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <c:if test="${reportMsgs.list.size()==0}">
+                        <tr>
+                            <td colspan="6">
+                                <strong style="margin-left: 45%">暂无举报信息</strong>
+                            </td>
+                        </tr>
+                    </c:if>
                         <c:forEach items="${reportMsgs.list}" var="report">
-                            <tr>
+                            <tr id="tr_${report.reportId}">
                                 <td width="5%">${report.article.articleId}</td>
                                 <td width="30%" class="line-limit-length">
                                    ${report.reportContent}
@@ -75,9 +82,9 @@
                                         相关帖子
                                     </button>
 
-                                    <a href="${pageContext.request.contextPath}/report_manage/verb.do?reportId=${report.reportId}&articleId=${report.article.articleId}&page=${reportMsgs.pageNum}" role="button" class="btn btn-danger">屏蔽</a>
+                                    <a href="${pageContext.request.contextPath}/report_manage/verb.do?reportId=${report.reportId}&page=${reportMsgs.pageNum}&articleId=${report.article.articleId}" role="button" class="btn btn-danger">屏蔽</a>
 
-                                    <a href="${pageContext.request.contextPath}/report_manage/return.do?reportId=${report.reportId}&page=${reportMsgs.pageNum}" role="button" class="btn btn-info">驳回</a>
+                                    <a href="${pageContext.request.contextPath}/report_manage/return.do?reportId=${report.reportId}&page=${reportMsgs.pageNum}&articleId=${report.article.articleId}" role="button" class="btn btn-info">驳回</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -140,6 +147,41 @@
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
 <%@ include file="ArticleUpdate.jsp"%>
     <script>
+        function pass(id,page,articleId) {
+            $.ajax({
+                url:"${pageContext.request.contextPath}/report_manage/verb.do",
+                type:"POST" , //请求方式
+                data:{"reportId":id,
+                    "page":page,
+                    "articleId":articleId},
+                success:function (data) {
+                    if (data){
+                        $("#tr_"+id).remove();
+                    }
+                },//响应成功后的回调函数
+                error:function () {
+                    alert("出错啦...")
+                },//表示如果请求响应出现错误，会执行的回调函数
+                dataType:"json",//设置接受到的响应数据的格式
+            })
+        }
+        function reject(id,page) {
+            $.ajax({
+                url:"${pageContext.request.contextPath}/report_manage/return.do",
+                type:"POST" , //请求方式
+                data:{"reportId":id,
+                    "page":page},
+                success:function (data) {
+                    if (data){
+                        $("#tr_"+id).remove();
+                    }
+                },//响应成功后的回调函数
+                error:function () {
+                    alert("出错啦...")
+                },//表示如果请求响应出现错误，会执行的回调函数
+                dataType:"json",//设置接受到的响应数据的格式
+            })
+        }
      function article_Detail(id) {
          $.ajax({
              url:"${pageContext.request.contextPath}/article_manage/findById.do",

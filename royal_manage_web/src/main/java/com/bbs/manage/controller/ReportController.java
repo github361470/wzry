@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
@@ -45,12 +46,13 @@ public class ReportController {
      * @return
      */
     @RequestMapping("/verb.do")
-    public String noun(@RequestParam(name = "reportId",defaultValue = "1",required = true)int reportId,
+
+    public String  noun(@RequestParam(name = "reportId",required = true)int reportId,
                        @RequestParam(name = "articleId",defaultValue = "5",required = true)int articleId,
                        @RequestParam(name = "page",defaultValue = "1",required = true)int page) throws Exception{
-
-        reportManageService.verb(reportId,articleId);
+            reportManageService.verb(reportId,articleId);
         return "redirect:findByPage.do?size=5&page="+page;
+
     }
 
     /**
@@ -60,8 +62,9 @@ public class ReportController {
      * @return
      */
     @RequestMapping("/return.do")
-    public String returnDo(@RequestParam(name = "reportId",defaultValue = "1",required = true)int reportId,
+    public String  returnDo(@RequestParam(name = "reportId",defaultValue = "1",required = true)int reportId,
                            @RequestParam(name = "page",defaultValue = "1",required = true)int page) throws Exception{
+
         reportManageService.returnDo(reportId);
         return "redirect:findByPage.do?size=5&page="+page;
     }

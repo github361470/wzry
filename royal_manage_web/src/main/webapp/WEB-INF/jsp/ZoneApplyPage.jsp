@@ -65,24 +65,29 @@
                     </thead>
                     <tbody>
                     <c:if test="${zoneApplyMsgs.list.size()==0}">
-                        <tr>
+                        <tr >
                             <td colspan="6">
-                                <strong style="margin-left: 45%"> 暂无记录</strong>
+                                <strong style="margin-left: 45%"> 暂无版块审核</strong>
                             </td>
                         </tr>
                     </c:if>
                     <c:forEach items="${zoneApplyMsgs.list}" var="zoneApply">
                         
-                            <tr>
+                            <tr id="tr_${zoneApply.applyZoneId}">
                                 <td width="10%">${zoneApply.applyZoneId}</td>
                                 <td width="10%" class="line-limit-length">${zoneApply.userName}</td>
                                 <td width="25%" class="line-limit-length">${zoneApply.zoneName}</td>
                                 <td width="30%" class="line-limit-length">${zoneApply.reason}</td>
                                 <td width="15%">
 
-                                    <a href="/zoneApply_manage/pass.do?id=${zoneApply.applyZoneId}&page=${zoneApplyMsgs.pageNum}" role="button" class="btn btn-primary">通过</a>
+                                   <%-- <a href="javaScript:pass('${zoneApply.applyZoneId}','${zoneApplyMsgs.pageNum}')" role="button" class="btn btn-primary">通过</a>
 
-                                    <a href="/zoneApply_manage/reject.do?id=${zoneApply.applyZoneId}&page=${zoneApplyMsgs.pageNum}" role="button" class="btn btn-danger" >驳回</a>
+                                    <a href="javaScript:reject('${zoneApply.applyZoneId}','${zoneApplyMsgs.pageNum}')" role="button" class="btn btn-danger" >驳回</a>
+                              --%>
+                                       <a href="${pageContext.request.contextPath}/zoneApply_manage/pass.do?id=${zoneApply.applyZoneId}&page=${zoneApplyMsgs.pageNum}" role="button" class="btn btn-primary">通过</a>
+
+                                       <a href="${pageContext.request.contextPath}/zoneApply_manage/reject.do?id=${zoneApply.applyZoneId}&page=${zoneApplyMsgs.pageNum}" role="button" class="btn btn-danger" >驳回</a>
+
                                 </td>
                             </tr>
                     </c:forEach>
@@ -144,6 +149,41 @@
 <%--<%@ include file="zoneApplyAdd.jsp"%>--%>
 <%@ include file="ZoneApplyUpdate.jsp"%>
 <script>
+    function pass(id,page) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/zoneApply_manage/pass.do",
+            type:"POST" , //请求方式
+            data:{"id":id,
+                "page":page},
+            success:function (data) {
+                if (data){
+                    $("#tr_"+id).remove();
+                }
+            },//响应成功后的回调函数
+            error:function () {
+                alert("出错啦...")
+            },//表示如果请求响应出现错误，会执行的回调函数
+            dataType:"json",//设置接受到的响应数据的格式
+        })
+    }
+
+    function reject(id,page) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/zoneApply_manage/reject.do",
+            type:"POST" , //请求方式
+            data:{"id":id,
+                "page":page},
+            success:function (data) {
+                if (data){
+                    $("#tr_"+id).remove();
+                }
+            },//响应成功后的回调函数
+            error:function () {
+                alert("出错啦...")
+            },//表示如果请求响应出现错误，会执行的回调函数
+            dataType:"json",//设置接受到的响应数据的格式
+        })
+    }
     function searchzoneApply(e) {
         location.href="${pageContext.request.contextPath}/zoneApply_manage/findByPage.do?size=5&page="+e;
     }

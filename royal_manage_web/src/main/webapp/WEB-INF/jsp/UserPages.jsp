@@ -107,11 +107,11 @@
                        </c:if>
 
                     <c:forEach items="${usersMsgs.list}" var="user">
-                            <tr>
+                            <tr id="tr_${user.userId}">
                                 <td width="10%">${user.userName}</td>
                                 <td width="10%" class="line-limit-length">${user.roleStr}</td>
                                 <td width="15%" class="line-limit-length">${user.email}</td>
-                                <td width="10%" class="line-limit-length">${user.talkStatusStr}</td>
+                                <td width="10%" class="line-limit-length" id="talk_${user.userId}">${user.talkStatusStr}</td>
                                 <td width="30%">${user.lastLoginTimeStr}</td>
                                 <td width="15%">
                                     <c:if test="${user.role==1 and user.isupdating==1 and user.updateStatus==0}">
@@ -120,11 +120,19 @@
                                     <c:if test="${user.role==2 or user.role==3}">
                                         <a href="#" role="button" class="btn btn-primary" disabled="disabled">升级</a>
                                     </c:if>
-                                   <c:if test="${user.talkStatus==0}">
+                                  <%-- <c:if test="${user.talkStatus==0}">
                                         <a href="/user_manage/changeTalkStatus.do?id=${user.userId}&page=${usersMsgs.pageNum}" role="button" class="btn btn-danger">禁言</a>
                                     </c:if>
                                     <c:if test="${user.talkStatus==1}">
                                         <a href="/user_manage/changeTalkStatus.do?id=${user.userId}&page=${usersMsgs.pageNum}" role="button" class="btn btn-info" >恢复</a>
+                                    </c:if>--%>
+                                    <c:if test="${user.talkStatus==0}">
+                                        <a href="javaScript:changeStatus('${user.userId}','${usersMsgs.pageNum}',1)" role="button" id="top_${user.userId}" class="btn btn-danger">禁言</a>
+                                        <a href="javaScript:changeStatus('${user.userId}','${usersMsgs.pageNum}',2)" role="button" id="notop_${user.userId}" class="btn btn-info" style="display:none;" >恢复</a>
+                                    </c:if>
+                                    <c:if test="${user.talkStatus==1}">
+                                        <a href="javaScript:changeStatus('${user.userId}','${usersMsgs.pageNum}',1)" role="button" id="top_${user.userId}" class="btn btn-danger" style="display:none;" >禁言</a>
+                                        <a href="javaScript:changeStatus('${user.userId}','${usersMsgs.pageNum}',2)" role="button" id="notop_${user.userId}" class="btn btn-info" >恢复</a>
                                     </c:if>
                                 </td>
 
@@ -203,6 +211,31 @@
         location.href="${pageContext.request.contextPath}/user_manage/findByPage.do?&userName=&role=0&size=5&page="+e;
     }
 
+    function changeStatus(articleId,page,id) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/user_manage/changeTalkStatus.do",
+            type:"POST" , //请求方式
+            data:{"id":articleId,
+                "page":page},
+            success:function (data) {
+                if (data){
+                    if (id==1){
+                        $("#top_"+articleId).hide();
+                        $("#notop_"+articleId).show();
+                        $("#talk_"+articleId).text("是")
+                    }else if (id==2){
+                        $("#notop_"+articleId).hide();
+                        $("#top_"+articleId).show();
+                        $("#talk_"+articleId).text("否")
+                    }
+                }
+            },//响应成功后的回调函数
+            error:function () {
+                alert("出错啦...")
+            },//表示如果请求响应出现错误，会执行的回调函数
+            dataType:"json",//设置接受到的响应数据的格式
+        })
+    }
 </script>
 </body>
 </html>

@@ -100,24 +100,34 @@
                         </tr>
                     </c:if>
                     <c:forEach items="${articleMsgs.list}" var="article">
-                            <tr>
+                            <tr id="tr_${article.articleId}">
                                 <td width="15%">${article.title}</td>
                                 <td width="25%" class="line-limit-length">${article.content}</td>
                                 <td width="8%" class="line-limit-length">${article.senderName}</td>
-                                <td width="8%" class="line-limit-length">${article.isTopStr}</td>
+                                <td width="8%" class="line-limit-length" id="istop_${article.articleId}">${article.isTopStr}</td>
                                 <td width="6%">${article.replyCount}</td>
                                 <td width="6%">${article.upvoteCount}</td>
                                 <td width="6%">${article.browseCount}</td>
                                 <td width="12%">${article.zone.zoneName}</td>
                                 <td width="15%">
 
-                                    <a href="/article_manage/deleteArticle.do?id=${article.articleId}&page=${articleMsgs.pageNum}" role="button" class="btn btn-primary">屏蔽</a>
+                                  <%--  <a href="/article_manage/deleteArticle.do?id=${article.articleId}&page=${articleMsgs.pageNum}" role="button" class="btn btn-primary">屏蔽</a>
+--%>
+                                      <a href="${pageContext.request.contextPath}/article_manage/deleteArticle.do?id=${article.articleId}&page=${articleMsgs.pageNum}" role="button" class="btn btn-primary">屏蔽</a>
 
-                                    <c:if test="${article.isTop==0}">
+                                  <%-- <c:if test="${article.isTop==0}">
                                         <a href="/article_manage/changeStatus.do?id=${article.articleId}&page=${articleMsgs.pageNum}" role="button" class="btn btn-danger" >置顶</a>
                                     </c:if>
                                     <c:if test="${article.isTop==1}">
                                         <a href="/article_manage/changeStatus.do?id=${article.articleId}&page=${articleMsgs.pageNum}" role="button" class="btn btn-info" >取消</a>
+                                    </c:if>--%>
+                                    <c:if test="${article.isTop==0}">
+                                        <a href="javaScript:changeStatus('${article.articleId}','${articleMsgs.pageNum}',1)" id="top_${article.articleId}" role="button" class="btn btn-danger" >置顶</a>
+                                        <a href="javaScript:changeStatus('${article.articleId}','${articleMsgs.pageNum}',2)" id="notop_${article.articleId}" role="button" class="btn btn-info" style="display:none;" >取消</a>
+                                    </c:if>
+                                    <c:if test="${article.isTop==1}">
+                                        <a href="javaScript:changeStatus('${article.articleId}','${articleMsgs.pageNum}',1)" id="top_${article.articleId}" role="button" class="btn btn-danger" style="display:none;" >置顶</a>
+                                        <a href="javaScript:changeStatus('${article.articleId}','${articleMsgs.pageNum}',2)" id="notop_${article.articleId}" role="button" class="btn btn-info" >取消</a>
                                     </c:if>
                                 </td>
                             </tr>
@@ -180,6 +190,50 @@
 <%--<%@ include file="ArticleAdd.jsp"%>--%>
 <%@ include file="ArticleUpdate.jsp"%>
 <script>
+
+
+    function pingbi(articleId,page) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/article_manage/deleteArticle.do",
+            type:"POST" , //请求方式
+            data:{"id":articleId,
+                "page":page},
+            success:function (data) {
+                if (data){
+                    $("#tr_"+articleId).remove();
+                }
+            },//响应成功后的回调函数
+            error:function () {
+                alert("出错啦...")
+            },//表示如果请求响应出现错误，会执行的回调函数
+            dataType:"json",//设置接受到的响应数据的格式
+        })
+    }
+    function changeStatus(articleId,page,id) {
+        $.ajax({
+            url:"${pageContext.request.contextPath}/article_manage/changeStatus.do",
+            type:"POST" , //请求方式
+            data:{"id":articleId,
+            "page":page},
+            success:function (data) {
+                if (data){
+                   if (id==1){
+                       $("#top_"+articleId).hide();
+                       $("#notop_"+articleId).show();
+                       $("#istop_"+articleId).text("是")
+                   }else if (id==2){
+                       $("#notop_"+articleId).hide();
+                       $("#top_"+articleId).show();
+                       $("#istop_"+articleId).text("否")
+                   }
+                }
+            },//响应成功后的回调函数
+            error:function () {
+                alert("出错啦...")
+            },//表示如果请求响应出现错误，会执行的回调函数
+            dataType:"json",//设置接受到的响应数据的格式
+        })
+    }
     function searchArticle(e) {
         location.href="${pageContext.request.contextPath}/article_manage/findByPage.do?size=5&page="+e;
     }
