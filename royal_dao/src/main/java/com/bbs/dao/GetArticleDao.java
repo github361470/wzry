@@ -23,6 +23,7 @@ public interface GetArticleDao {
             @Result(property = "zoneId", column = "zoneId"),
             @Result(property = "isReport", column = "isReport"),
             @Result(property = "comments", column = "articleId", javaType = List.class, many = @Many(select = "com.bbs.dao.AllCommentsDao.findbyArticleId")),
+            @Result(property = "user", column = "senderName", javaType = User.class, one = @One(select = "com.bbs.dao.SendUserDao.findUserBySendName")),
 
     })
     List<Article> findDetailArticle(String senderName);

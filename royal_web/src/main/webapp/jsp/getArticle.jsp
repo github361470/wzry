@@ -287,7 +287,7 @@
         //判断用户是否登录
         var loginUser = "${user}";
         if (!loginUser) {
-            alert("请登录");
+            alert("您没有登录论坛，请登录后再进行回复");
             return;
         }
         $("#commentId").val(commentId);
@@ -303,7 +303,7 @@
         //判断用户是否登录
         var loginUser = "${user}";
         if (!loginUser) {
-            alert("请登录");
+            alert("您没有登录论坛，不能进行举报!");
             return;
         }
         $("#commentId2").val(commentId);
@@ -319,7 +319,7 @@
         function () {
             var attr = $("#collect").parent().attr("class");
             if (${empty user}) {
-                alert("请先登录");
+                alert("您没有登录论坛，请登录后再进行收藏");
                 return false;
             }
 
@@ -369,7 +369,7 @@
     $(".newTopic").click(function () {
 
         if (${empty user}) {
-            alert("请先登录");
+            alert("您没有登录论坛，请登录后再进行评论");
             return false;
         }
         if (${user.talkStatus == 1}){
@@ -381,7 +381,7 @@
     $("#newTopic").click(function () {
 
         if (${empty user}) {
-            alert("请先登录");
+            alert("您没有登录论坛，请登录后再进行评论");
             return false;
         }
         if (${user.talkStatus == 1}){

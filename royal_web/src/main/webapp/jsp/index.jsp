@@ -50,57 +50,18 @@
         </div>
 
 
-        <!-- 导航 -->
-        <%--<ul class="hm-bbs-nav border-lrb clearfix">--%>
-            <%--<c:if test="${zoneId==1}">--%>
-            <%--<li class="current">--%>
-                <%--</c:if>--%>
-                <%--<c:if test="${zoneId!=1}">--%>
-            <%--<li>--%>
-                <%--</c:if>--%>
-                <%--<a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=1"><em></em>综合交流区</a>--%>
-            <%--</li>--%>
-
-
-            <%--<c:if test="${zoneId==2}">--%>
-            <%--<li class="current">--%>
-                <%--</c:if>--%>
-                <%--<c:if test="${zoneId!=2}">--%>
-            <%--<li>--%>
-                <%--</c:if>--%>
-                <%--<a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=2"><em></em>BUG反馈区</a>--%>
-            <%--</li>--%>
-
-            <%--<c:if test="${zoneId==3}">--%>
-            <%--<li class="current">--%>
-                <%--</c:if>--%>
-                <%--<c:if test="${zoneId!=3}">--%>
-            <%--<li>--%>
-                <%--</c:if>--%>
-                <%--<a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=3"><em></em>新闻公告区</a>--%>
-            <%--</li>--%>
-
-            <%--<c:if test="${zoneId==4}">--%>
-            <%--<li class="current">--%>
-                <%--</c:if>--%>
-                <%--<c:if test="${zoneId!=4}">--%>
-            <%--<li>--%>
-                <%--</c:if>--%>
-                <%--<a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=4"><em></em>活动专区</a>--%>
-            <%--</li>--%>
-        <%--</ul>--%>
 
 
 
         <ul class="hm-bbs-nav border-lrb clearfix">
             <c:forEach var="zone" items="${zones}">
-                <c:if test="${zoneId==zone.zoneid}">
+                <c:if test="${zoneId==zone.zoneId}">
                     <li class="current">
                 </c:if>
-                <c:if test="${zoneId!=zone.zoneid}">
+                <c:if test="${zoneId!=zone.zoneId}">
                     <li>
                 </c:if>
-                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=${zone.zoneid}"><em></em>${zone.zonename}</a>
+                <a href="${pageContext.request.contextPath}/zone/findAllById.do?zoneId=${zone.zoneId}"><em></em>${zone.zoneName}</a>
                 </li>
             </c:forEach>
         </ul>
@@ -111,31 +72,18 @@
             <!-- 左侧列表 -->
             <div class="list-view l">
                 <ul>
-                    <%--
-                    <li class="clearfix ding">
-                        <div class="hm-index-title">
-                            <i class="set-to-top">顶</i> <a href="getArticle.do">求官方出艾琳英雄活动</a>
-                        </div>
-                        <div class="hm-index-con">本人玩得迟，所以看到别人用艾琳的时候，特别羡慕，现贵族6了，很想要一个艾琳，我身边很多朋友也想要，求</div>
-                        <div class="hm-index-info l">
-                            <span class="article-username">晨曦初露</span>
-                            <span class="post-time">2017-05-24 08:00:05</span>
-                        </div>
-                        <div class="hm-index-fun r">
-                            <span class="icon-like"><i></i>1</span>
-                            <span class="icon-talk"><i></i>0</span>
-                        </div>
-                    </li>
-                    --%>
+
 
                     <%--使用c:forEach遍历该区域的所有的article--%>
                     <c:forEach items="${list}" var="article">
+                        <c:if test="${article.isReport ==0}">
                         <c:if test="${article.isTop==0}">
                             <li class="clearfix ">
                         </c:if>
                         <c:if test="${article.isTop==1}">
                             <li class="clearfix ding ">
                         </c:if>
+
                         <div class="hm-index-title">
                             <i class="set-to-top">顶</i> <a
                                 href="${pageContext.request.contextPath}/getArticle/findDetailArticleById.do?articleId=${article.articleId}">${article.title}</a>
@@ -150,7 +98,7 @@
                             <span class="icon-talk"><i></i>${article.replyCount}</span>
                         </div>
                         </li>
-
+                        </c:if>
 
                     </c:forEach>
 
@@ -188,7 +136,7 @@
     <a href="#" class="goTop"><i> </i><span>返回<br/>部</span></a>
 </div>
 
-
+6
 <!-- 发帖弹出框 -->
 <%--发帖判断  $$ ${user.talkStatus == 0} "${channelItem.itemTag =='channel_name'|| channelItem.itemTag =='mobile'}" --%>
 <c:if test="${not empty user}">
@@ -283,7 +231,7 @@
     <%--发帖先判断是否被禁言，是否有用户--%>
     $(".newTopic").click(function () {
         if (${empty user}) {
-            alert("请先登录");
+            alert("您没有登录论坛，请登录后再进行发帖");
             return false;
         }
         if(${user.talkStatus == 1}){

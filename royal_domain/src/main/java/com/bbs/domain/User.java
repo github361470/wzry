@@ -1,5 +1,7 @@
 package com.bbs.domain;
 
+import com.bbs.utils.DateUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -37,11 +39,13 @@ public class User implements Serializable {
      * 1代表普通用户；2代表高级用户，3代表超级管理员
      */
     private Integer role;
+    private String roleStr;
 
     /**
      * 最后登录时间
      */
     private Date lastLoginTime;
+    private String lastLoginTimeStr;
 
     /**
      * 登录状态，0代表未登录，1代表已登录
@@ -52,6 +56,7 @@ public class User implements Serializable {
      * 发言状态，0代表未屏蔽发言（默认），1代表已屏蔽发言
      */
     private Integer talkStatus;
+    private String talkStatusStr;
 
     /**
      * 申请升级(0-未申请,1-已申请)
@@ -157,20 +162,50 @@ public class User implements Serializable {
         return serialVersionUID;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", userPass='" + userPass + '\'' +
-                ", email='" + email + '\'' +
-                ", picUrl='" + picUrl + '\'' +
-                ", role=" + role +
-                ", lastLoginTime=" + lastLoginTime +
-                ", loginStatus=" + loginStatus +
-                ", talkStatus=" + talkStatus +
-                ", isupdating=" + isupdating +
-                ", updateStatus=" + updateStatus +
-                '}';
+    public String getRoleStr() {
+        //1代表普通用户；2代表高级用户，3代表超级管理员
+        if (role!=null){
+            if (role==1){
+                roleStr="普通用户";
+            }else if (role==2){
+                roleStr="高级用户";
+            }else if (role==3){
+                roleStr="超级管理员";
+            }else{
+                roleStr="";
+            }
+        }
+        return roleStr;
+    }
+
+    public void setRoleStr(String roleStr) {
+        this.roleStr = roleStr;
+    }
+
+    public String getLastLoginTimeStr() {
+        if (lastLoginTime!=null){
+           lastLoginTimeStr = DateUtils.date2String(lastLoginTime, "yyyy-MM-dd HH:mm:ss");
+        }
+        return lastLoginTimeStr;
+    }
+
+    public void setLastLoginTimeStr(String lastLoginTimeStr) {
+        this.lastLoginTimeStr = lastLoginTimeStr;
+    }
+
+    public String getTalkStatusStr() {
+        //发言状态，0代表未屏蔽发言（默认），1代表已屏蔽发言
+        if (talkStatus!=null){
+            if (talkStatus==0){
+                talkStatusStr="否";
+            }else if (talkStatus==1){
+                talkStatusStr="是";
+            }
+        }
+        return talkStatusStr;
+    }
+
+    public void setTalkStatusStr(String talkStatusStr) {
+        this.talkStatusStr = talkStatusStr;
     }
 }

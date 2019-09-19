@@ -1,137 +1,118 @@
 package com.bbs.domain;
 
+import com.bbs.utils.DateUtils;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * bbs_report_table
- * @author 
+ * @author
  */
 public class Report implements Serializable {
-    private Integer reportid;
-
+    private Integer reportId;
     /**
      * 举报内容
      */
-    private String reportcontent;
-
+    private String reportContent;
     /**
      * 举报时间
      */
-    private Date reporttime;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    private Date reportTime;
+    private String reportTimeStr;
     /**
      * 举报人
      */
-    private String reportusername;
-
+    private String reportUserName;
     /**
-     * 处理状态
+     * 处理状态,0屏蔽，1显示
      */
-    private Integer reportstatus;
-
+    private Integer reportStatus;
+    private String reportStatusStr;
     /**
      * 文章ID
      */
-    private Integer articleid;
+    private Article article;
+    private Integer articleId;
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getReportid() {
-        return reportid;
+    public String getReportTimeStr() {
+        return  DateUtils.date2String(reportTime, "yyyy-MM-dd HH-mm-ss");
+
     }
 
-    public void setReportid(Integer reportid) {
-        this.reportid = reportid;
+    public void setReportTimeStr(String reportTimeStr) {
+        this.reportTimeStr = reportTimeStr;
     }
 
-    public String getReportcontent() {
-        return reportcontent;
+    public Integer getReportId() {
+        return reportId;
     }
 
-    public void setReportcontent(String reportcontent) {
-        this.reportcontent = reportcontent;
+    public void setReportId(Integer reportId) {
+        this.reportId = reportId;
     }
 
-    public Date getReporttime() {
-        return reporttime;
+    public String getReportContent() {
+        return reportContent;
     }
 
-    public void setReporttime(Date reporttime) {
-        this.reporttime = reporttime;
+    public void setReportContent(String reportContent) {
+        this.reportContent = reportContent;
     }
 
-    public String getReportusername() {
-        return reportusername;
+    public Date getReportTime() {
+        return reportTime;
     }
 
-    public void setReportusername(String reportusername) {
-        this.reportusername = reportusername;
+    public void setReportTime(Date reportTime) {
+        this.reportTime = reportTime;
     }
 
-    public Integer getReportstatus() {
-        return reportstatus;
+    public String getReportUserName() {
+        return reportUserName;
     }
 
-    public void setReportstatus(Integer reportstatus) {
-        this.reportstatus = reportstatus;
+    public void setReportUserName(String reportUserName) {
+        this.reportUserName = reportUserName;
     }
 
-    public Integer getArticleid() {
-        return articleid;
+    public Integer getReportStatus() {
+        return reportStatus;
     }
 
-    public void setArticleid(Integer articleid) {
-        this.articleid = articleid;
+    public void setReportStatus(Integer reportStatus) {
+        this.reportStatus = reportStatus;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        Report other = (Report) that;
-        return (this.getReportid() == null ? other.getReportid() == null : this.getReportid().equals(other.getReportid()))
-            && (this.getReportcontent() == null ? other.getReportcontent() == null : this.getReportcontent().equals(other.getReportcontent()))
-            && (this.getReporttime() == null ? other.getReporttime() == null : this.getReporttime().equals(other.getReporttime()))
-            && (this.getReportusername() == null ? other.getReportusername() == null : this.getReportusername().equals(other.getReportusername()))
-            && (this.getReportstatus() == null ? other.getReportstatus() == null : this.getReportstatus().equals(other.getReportstatus()))
-            && (this.getArticleid() == null ? other.getArticleid() == null : this.getArticleid().equals(other.getArticleid()));
+    public String getReportStatusStr() {
+        return reportStatusStr;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getReportid() == null) ? 0 : getReportid().hashCode());
-        result = prime * result + ((getReportcontent() == null) ? 0 : getReportcontent().hashCode());
-        result = prime * result + ((getReporttime() == null) ? 0 : getReporttime().hashCode());
-        result = prime * result + ((getReportusername() == null) ? 0 : getReportusername().hashCode());
-        result = prime * result + ((getReportstatus() == null) ? 0 : getReportstatus().hashCode());
-        result = prime * result + ((getArticleid() == null) ? 0 : getArticleid().hashCode());
-        return result;
+    public void setReportStatusStr(String reportStatusStr) {
+        this.reportStatusStr = reportStatusStr;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", reportid=").append(reportid);
-        sb.append(", reportcontent=").append(reportcontent);
-        sb.append(", reporttime=").append(reporttime);
-        sb.append(", reportusername=").append(reportusername);
-        sb.append(", reportstatus=").append(reportstatus);
-        sb.append(", articleid=").append(articleid);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
     }
 }

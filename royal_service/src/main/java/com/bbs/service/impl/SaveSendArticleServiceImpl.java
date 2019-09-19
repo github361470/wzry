@@ -38,6 +38,7 @@ public class SaveSendArticleServiceImpl implements SaveSendArticleService {
         article.setSenderName(senderName);
         article.setZoneId(Integer.parseInt(zoneId));
 
+
         saveSendArticleDao.sendArticle(article);
     }
 

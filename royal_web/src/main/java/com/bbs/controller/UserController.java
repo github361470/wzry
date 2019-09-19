@@ -119,6 +119,7 @@ public class UserController {
             user.setLoginStatus(1);
             user.setPicUrl("\\images\\default.png");
             user.setRole(1);
+            user.setTalkStatus(0);
             ResponseResult result=userService.userRegister(user);
             if (result.isSuccess()){
                 res.getSession().setAttribute("user",user);

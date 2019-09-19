@@ -25,6 +25,7 @@ public class GetArticleServiceImpl implements GetArticleService {
         int size = list.size();
         Article article = list.get(size - 1);
 
+
         String content = article.getContent();
 
         String title = article.getTitle();
@@ -39,6 +40,7 @@ public class GetArticleServiceImpl implements GetArticleService {
             }
 
         }
+
         return article;
     }
 

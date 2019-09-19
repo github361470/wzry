@@ -25,7 +25,7 @@ public class CommentsServiceImpl implements CommentsService {
         commentsDao.saveComment(comment);
 
         /**
-         * 保存完回复需要修改总回复数
+         * 保存完评论需要修改总评论数
          */
         Integer replyCount = commentsDao.selectAllCommentsByarticleId(articleId);
 

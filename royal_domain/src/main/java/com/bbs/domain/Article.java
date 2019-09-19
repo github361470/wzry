@@ -15,15 +15,18 @@ public class Article implements Serializable {
     private String sendTimeStr;//发送时间字符串格式
     private String senderName;//发送人编号
     private Integer isTop;//是否置顶 如果是0，代表不置顶；如果是1，代表置顶；
+    private String isTopStr;     //置顶状态描述
     private Integer replyCount;//评论数
     private Integer upvoteCount;//点赞数
     private Integer browseCount;//浏览数
     private Integer zoneId;//所在交流区
+    private Zone zone;      //所在交流区
     private Integer isReport;//举报状态
 
 
     //帖子关联评论（一个帖子会被多个人评论）
      private  List<Comment> comments;
+     //一个贴子只有一个用户
      private User user;
 
     public Integer getArticleId() {
@@ -57,6 +60,32 @@ public class Article implements Serializable {
     public void setSendTime(Date sendTime) {
         this.sendTime = sendTime;
     }
+
+
+
+    public String getIsTopStr() {
+        if (isTop!=null){
+            if (isTop==0){
+                isTopStr="否";
+            }else if (isTop==1){
+                isTopStr="是";
+            }
+        }
+        return isTopStr;
+    }
+
+    public void setIsTopStr(String isTopStr) {
+        this.isTopStr = isTopStr;
+    }
+
+    public Zone getZone() {
+        return zone;
+    }
+
+    public void setZone(Zone zone) {
+        this.zone = zone;
+    }
+
 
 
 
