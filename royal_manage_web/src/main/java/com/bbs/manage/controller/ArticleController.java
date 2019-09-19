@@ -1,22 +1,23 @@
 package com.bbs.manage.controller;
 
 import com.bbs.domain.Article;
-import com.bbs.service.ArticleService;
+import com.bbs.service.Article_ManageService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/article")
+@RequestMapping("/article_manage")
 public class ArticleController {
     @Autowired
-    private ArticleService articleManageService;
+    private Article_ManageService articleManageService;
 
     /**
      * 未屏蔽帖子列表
@@ -25,8 +26,8 @@ public class ArticleController {
      * @return
      */
     @RequestMapping("/findByPage.do")
-    public ModelAndView findAll(@RequestParam(name = "page",required = true,defaultValue = "1")int page,
-                                @RequestParam(name = "size",required = true,defaultValue = "5")int size) throws Exception{
+    public ModelAndView findAll(@RequestParam(name = "page",defaultValue = "1")int page,
+                                @RequestParam(name = "size",defaultValue = "5")int size) throws Exception {
         ModelAndView mv=new ModelAndView();
         List<Article> articles = articleManageService.findAll(page,size);
         PageInfo<Article> pageInfo=new PageInfo(articles);
